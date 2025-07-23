@@ -1,0 +1,202 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Palette, Zap, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
+import 'react-slideshow-image/dist/styles.css';
+import { Fade } from 'react-slideshow-image';
+import hero1 from '../assets/optimized/IMG_7453.JPG';
+import hero2 from '../assets/optimized/DSC03471.jpg';
+import hero3 from '../assets/optimized/IMG_7431.JPG';
+import hero4 from '../assets/optimized/IMG_7424.JPG';
+import hero5 from '../assets/optimized/IMG_7420.JPG';
+
+const slideImages = [
+    { url: hero1 },
+    { url: hero2 },
+    { url: hero3 },
+    { url: hero4 },
+    { url: hero5 }
+];
+
+const Hero = () => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+
+    // Auto-advance slides
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prevIndex) =>
+                prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 6000); // Change image every 6 seconds
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // Trigger animations on mount
+    useEffect(() => {
+        setIsVisible(true);
+    }, []);
+
+    const handleWhatsAppClick = () => {
+        const message = encodeURIComponent("Hello FITKIT, I'm interested in customizing my team's kit!");
+        window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+    };
+
+    const nextImage = () => {
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === 0 ? slideImages.length - 1 : prevIndex - 1
+        );
+    };
+
+    const goToSlide = (index) => {
+        setCurrentImageIndex(index);
+    };
+
+    const features = [
+        { icon: Palette, text: "Client-Provided Designs Welcome" },
+        { icon: Shield, text: "Minimum Order Quantity (MOQ) - Just 10 pieces" },
+        { icon: Zap, text: "Multiple Sports. One Trusted Brand." },
+        { icon: Truck, text: "Domestic + International Deliveries" }
+    ];
+
+    return (
+        <div className="relative min-h-screen overflow-hidden">
+            {/* Background Image with Ken Burns Effect - Instant Transition */}
+            <div className="absolute inset-0">
+                <div
+                    className="w-full h-full bg-cover bg-center bg-no-repeat ken-burns-image transition-all duration-300"
+                    style={{
+                        backgroundImage: `url(${slideImages[currentImageIndex].url})`
+                    }}
+                />
+            </div>
+
+            {/* Enhanced Gradient Overlay for Better Readability */}
+            <div className="absolute inset-0 bg-gradient-custom"></div>
+
+            {/* Manual Navigation Arrows */}
+            <motion.button
+                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
+                whileTap={{ scale: 0.9 }}
+                onClick={prevImage}
+                className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+            >
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
+            </motion.button>
+
+            <motion.button
+                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
+                whileTap={{ scale: 0.9 }}
+                onClick={nextImage}
+                className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+            >
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
+            </motion.button>
+
+            {/* Slide Indicators */}
+            <div className="absolute bottom-4 sm:bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-2 sm:space-x-3">
+                {slideImages.map((_, index) => (
+                    <motion.button
+                        key={index}
+                        whileHover={{ scale: 1.3 }}
+                        whileTap={{ scale: 0.8 }}
+                        onClick={() => goToSlide(index)}
+                                                 className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${index === currentImageIndex
+                                ? 'bg-[#C6FF00] scale-125 shadow-lg shadow-[#C6FF00]/50'
+                                : 'bg-white bg-opacity-60 hover:bg-opacity-80'
+                            }`}
+                    />
+                ))}
+            </div>
+
+                  {/* Content Positioned to Left - Responsive */}
+      <div className="absolute inset-0 flex items-center justify-center sm:justify-start z-20 md:right-[40%]">
+        <div className="text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 max-w-full sm:max-w-3xl lg:max-w-4xl">
+          <div className="text-center sm:text-left">
+                        {/* Main Headline with Dramatic Entrance */}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+                            animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+                            transition={{ duration: 1.2, delay: 0.3, type: "spring", bounce: 0.4 }}
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
+                        >
+                            <span className="text-[#0052FF] drop-shadow-lg">Your Team.</span>{" "}
+                            <span className="text-white drop-shadow-lg">Your Gear.</span>
+                            <br />
+                            <span className="text-white drop-shadow-lg">Your Design.</span>
+                        </motion.h1>
+
+                        {/* Sub-headline */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.8, delay: 0.7 }}
+                            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 text-gray-100 drop-shadow-md font-medium max-w-full sm:max-w-2xl"
+                        >
+                            Specialists in custom jerseys, uniforms, and performance wear for over 15+ sports.
+                        </motion.p>
+
+                        {/* Features List with Enhanced Stagger */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.8, delay: 1.0 }}
+                            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12 max-w-full sm:max-w-3xl"
+                        >
+                            {features.map((feature, featureIndex) => (
+                                <motion.div
+                                    key={featureIndex}
+                                    initial={{ opacity: 0, x: -30, scale: 0.8 }}
+                                    animate={isVisible ? { opacity: 1, x: 0, scale: 1 } : {}}
+                                    transition={{
+                                        duration: 0.6,
+                                        delay: 1.2 + featureIndex * 0.15,
+                                        type: "spring",
+                                        bounce: 0.3
+                                    }}
+                                    className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-3 rounded-lg p-2 sm:p-3 hover:bg-opacity-30 transition-all duration-200" 
+                                >
+                                    <feature.icon className="h-5 w-5 text-[#C6FF00] drop-shadow-lg flex-shrink-0" />
+                                    <span className="text-sm sm:text-base font-medium text-white drop-shadow-md text-center sm:text-left">{feature.text}</span>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {/* CTA Button with Dramatic Entrance */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.8 }}
+                            animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+                            transition={{
+                                duration: 0.8,
+                                delay: 1.8,
+                                type: "spring",
+                                bounce: 0.4
+                            }}
+                        >
+                            <motion.button
+                                whileHover={{
+                                    scale: 1.08,
+                                    boxShadow: "0 20px 40px rgba(198, 255, 0, 0.3)",
+                                    backgroundColor: "#B8E600"
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleWhatsAppClick}
+                                className="bg-[#C6FF00] text-[#212121] px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-[#C6FF00]/30 transition-all duration-300 border-2 border-transparent hover:border-[#C6FF00] w-full sm:w-auto"
+                            >
+                                Customize Your Kit Now
+                            </motion.button>
+                        </motion.div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Hero; 

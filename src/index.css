@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    @apply bg-[#F8F9FA] text-[#212121];
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#C6FF00] text-[#212121] px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-transform duration-200;
+  }
+  
+  .btn-secondary {
+    @apply border border-[#0052FF] text-[#0052FF] px-6 py-3 rounded-lg font-semibold hover:bg-[#0052FF] hover:text-white transition-colors duration-200;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Ken Burns Effect for Hero Images */
+  @keyframes kenburns {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(-1%, 1%); }
+  }
+
+  .ken-burns-image {
+    animation: kenburns 15s infinite alternate ease-in-out;
+  }
+
+  /* Custom gradient overlay */
+  .bg-gradient-custom {
+    background-image: linear-gradient(to top, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
+  }
+}
