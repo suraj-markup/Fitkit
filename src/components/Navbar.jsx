@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Search } from 'lucide-react';
 import fitkitLogo from '../assets/fitkit.jpeg';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,23 +32,23 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between h-24">
           {/* Logo */}
-                      <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-2"
-            >
-              <img src={fitkitLogo} alt="FITKIT" className="w-16 h-16 rounded-full" />
-              <div className="flex flex-col">
-                <span className={`text-3xl font-bold transition-colors duration-300 ${
-                  isScrolled ? 'text-[#212121]' : 'text-white'
-                }`}>FIT KIT</span>
-                <span className={`text-xs transition-colors duration-300 ${
-                  isScrolled ? 'text-gray-600' : 'text-gray-200'
-                }`}>Engineered for Every Game</span>
-              </div>
-            </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center space-x-2 flex-shrink-0"
+          >
+            <img src={fitkitLogo} alt="FITKIT" className="w-16 h-16 rounded-full" />
+            <div className="flex flex-col">
+              <span className={`text-3xl font-bold transition-colors duration-300 ${
+                isScrolled ? 'text-[#212121]' : 'text-white'
+              }`}>FIT KIT</span>
+              <span className={`text-xs transition-colors duration-300 ${
+                isScrolled ? 'text-gray-600' : 'text-gray-200'
+              }`}>Engineered for Every Game</span>
+            </div>
+          </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Centered Desktop Navigation */}
+          <div className="hidden lg:flex items-center justify-center space-x-8 flex-1">
             <motion.a 
               href="#products" 
               className={`font-medium transition-all duration-300 relative ${
@@ -95,6 +97,83 @@ const Navbar = () => {
                 whileHover={{ width: '100%' }}
               />
             </motion.a>
+          </div>
+
+          {/* Right Side - Search and Contact Button */}
+          <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
+            {/* Search Bar */}
+            <div className="relative flex items-center">
+              <AnimatePresence mode="wait">
+                {!isSearchExpanded ? (
+                  /* Search Button */
+                  <motion.button
+                    key="search-button"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsSearchExpanded(true)}
+                    transition={{ duration: 0.2 }}
+                    className={`p-2 rounded-lg transition-all duration-300 ${
+                      isScrolled 
+                        ? 'bg-white/10 hover:bg-white/20 text-[#212121]' 
+                        : 'bg-white/10 hover:bg-white/20 text-white'
+                    }`}
+                  >
+                    <Search className="h-5 w-5" />
+                  </motion.button>
+                ) : (
+                  /* Expanded Search Bar */
+                  <motion.div
+                    key="search-bar"
+                    initial={{ width: 0, opacity: 0, scale: 0.8 }}
+                    animate={{ width: 'auto', opacity: 1, scale: 1 }}
+                    exit={{ width: 0, opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="relative flex items-center"
+                  >
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search className={`h-4 w-4 ${
+                        isScrolled ? 'text-gray-400' : 'text-gray-300'
+                      }`} />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Search kits..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onBlur={() => {
+                        if (!searchQuery) {
+                          setIsSearchExpanded(false);
+                        }
+                      }}
+                      autoFocus
+                      className={`pl-10 pr-10 py-2 w-64 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
+                        isScrolled 
+                          ? 'bg-white border-gray-300 text-[#212121] placeholder-gray-500' 
+                          : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
+                      }`}
+                    />
+                    <button
+                      onClick={() => {
+                        setIsSearchExpanded(false);
+                        setSearchQuery('');
+                      }}
+                      className={`absolute right-3 p-1 rounded-full transition-colors duration-200 ${
+                        isScrolled 
+                          ? 'hover:bg-gray-200 text-gray-400 hover:text-gray-600' 
+                          : 'hover:bg-white/20 text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
+            {/* Contact Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -111,7 +190,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -128,11 +207,32 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`md:hidden mt-2 rounded-lg p-4 shadow-xl ${
+            className={`lg:hidden mt-2 rounded-lg p-4 shadow-xl ${
               isScrolled ? 'bg-white' : 'bg-black'
             }`}
           >
             <div className="flex flex-col space-y-4">
+              {/* Mobile Search Bar */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className={`h-4 w-4 ${
+                    isScrolled ? 'text-gray-400' : 'text-gray-300'
+                  }`} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search kits..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`pl-10 pr-4 py-2 w-full rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
+                    isScrolled 
+                      ? 'bg-gray-50 border-gray-300 text-[#212121] placeholder-gray-500' 
+                      : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
+                  }`}
+                />
+              </div>
+              
+              {/* Navigation Links */}
               <a 
                 href="#products" 
                 className={`font-medium transition-colors duration-200 ${

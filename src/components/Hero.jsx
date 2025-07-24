@@ -85,7 +85,7 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
                 whileTap={{ scale: 0.9 }}
                 onClick={prevImage}
-                className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+                className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
             >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
             </motion.button>
@@ -94,7 +94,7 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
                 whileTap={{ scale: 0.9 }}
                 onClick={nextImage}
-                className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+                className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
             >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
             </motion.button>
@@ -126,10 +126,11 @@ const Hero = () => {
                             transition={{ duration: 1.2, delay: 0.3, type: "spring", bounce: 0.4 }}
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
                         >
-                            <span className="text-[#0052FF] drop-shadow-lg">Your Team.</span>{" "}
-                            <span className="text-white drop-shadow-lg">Your Gear.</span>
+                            <span className="text-blue-300 drop-shadow-lg">Your Team.</span>
                             <br />
-                            <span className="text-white drop-shadow-lg">Your Design.</span>
+                            <span className="text-blue-400 drop-shadow-lg">Your Gear.</span>
+                            <br />
+                            <span className="text-blue-500 drop-shadow-lg">Your Design.</span>
                         </motion.h1>
 
                         {/* Sub-headline */}
@@ -163,7 +164,7 @@ const Hero = () => {
                                     className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-3 rounded-lg p-2 sm:p-3 hover:bg-opacity-30 transition-all duration-200" 
                                 >
                                     <feature.icon className="h-5 w-5 text-[#C6FF00] drop-shadow-lg flex-shrink-0" />
-                                    <span className="text-sm sm:text-base font-medium text-white drop-shadow-md text-center sm:text-left">{feature.text}</span>
+                                    <span className="text-base sm:text-lg font-medium text-white drop-shadow-md text-center sm:text-left">{feature.text}</span>
                                 </motion.div>
                             ))}
                         </motion.div>
