@@ -124,7 +124,7 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 50, scale: 0.8 }}
                             animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
                             transition={{ duration: 1.2, delay: 0.3, type: "spring", bounce: 0.4 }}
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
+                            className="text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
                         >
                             <span className="text-red-300 drop-shadow-lg">Your Team.</span>
                             <br />
