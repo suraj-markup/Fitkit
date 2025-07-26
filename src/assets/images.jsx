@@ -9,7 +9,7 @@ import InterlockMesh1 from './Interlock Polyester Mesh/Interlock Polyester Mesh.
 import InterlockMesh2 from './Interlock Polyester Mesh/interlock.jpg';
 import InterlockMesh3 from './Interlock Polyester Mesh/interlockmesh.webp';
 import InterlockMesh4 from './Interlock Polyester Mesh/TTjersey.jpg';
-import ArcheryJersey from './Interlock Polyester Mesh/Archery jersey.jpg';
+import ArcheryJersey from './Interlock Polyester Mesh/Archery Jersey.jpg';
 import InterlockRed from './Interlock Polyester Mesh/interlockmeshred.jpg';
 import Bjersey from './Interlock Polyester Mesh/Bjersey.jpeg';
 
