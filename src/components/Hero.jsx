@@ -85,18 +85,18 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
                 whileTap={{ scale: 0.9 }}
                 onClick={prevImage}
-                className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+                className="absolute left-1 sm:left-2 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
             >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
+                <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-7 lg:h-7 text-black" />
             </motion.button>
 
             <motion.button
                 whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.3)" }}
                 whileTap={{ scale: 0.9 }}
                 onClick={nextImage}
-                className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
+                className="absolute right-1 sm:right-2 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all"
             >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-black" />
+                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-7 lg:h-7 text-black" />
             </motion.button>
 
             {/* Slide Indicators */}
@@ -116,8 +116,8 @@ const Hero = () => {
             </div>
 
                   {/* Content Positioned to Left - Responsive */}
-      <div className="absolute inset-0 flex items-center justify-center sm:justify-start z-20 md:right-[40%]">
-        <div className="text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 max-w-full sm:max-w-3xl lg:max-w-4xl">
+      <div className="absolute inset-0 flex items-center justify-center sm:justify-start z-20">
+        <div className="text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 max-w-full sm:max-w-3xl lg:max-w-4xl md:max-w-[60%]">
           <div className="text-center sm:text-left">
                         {/* Main Headline with Dramatic Entrance */}
                         <motion.h1

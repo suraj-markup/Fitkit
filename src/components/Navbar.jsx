@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Search } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import fitkitLogo from '../assets/fitkit.jpeg';
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  
+  // Check if we're on products page
+  const isProductsPage = location.pathname.startsWith('/products');
+  
+  // Determine text colors - always dark on products page, dynamic on home page
+  const shouldUseDarkText = isProductsPage || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,19 +40,20 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-transparent shadow-lg backdrop-blur-sm ' : 'bg-transparent backdrop-blur-sm '}`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2 flex-shrink-0"
+            onClick={() => navigate('/')}
           >
-            <img src={fitkitLogo} alt="FITKIT" className="w-16 h-16 rounded-full" />
+            <img src={fitkitLogo} alt="FITKIT" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full" />
             <div className="flex flex-col">
-              <span className={`text-3xl font-bold transition-colors duration-300 ${
-                isScrolled ? 'text-[#212121]' : 'text-white'
+              <span className={`text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 ${
+                shouldUseDarkText ? 'text-[#212121]' : 'text-white'
               }`}>FIT KIT</span>
-              <span className={`text-xs transition-colors duration-300 ${
-                isScrolled ? 'text-gray-600' : 'text-gray-200'
+              <span className={`text-xs transition-colors duration-300 hidden sm:block ${
+                shouldUseDarkText ? 'text-gray-600' : 'text-gray-200'
               }`}>Engineered for Every Game</span>
             </div>
           </motion.div>
@@ -52,14 +63,14 @@ const Navbar = () => {
             <motion.a 
               href="#products" 
               className={`font-medium transition-all duration-300 relative ${
-                isScrolled ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
+                shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
             >
               Products
               <motion.div
                 className={`absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
-                  isScrolled ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
+                  shouldUseDarkText ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
                 }`}
                 initial={{ width: 0 }}
                 whileHover={{ width: '100%' }}
@@ -68,14 +79,14 @@ const Navbar = () => {
             <motion.a 
               href="#about" 
               className={`font-medium transition-all duration-300 relative ${
-                isScrolled ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
+                shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
             >
               About Us
               <motion.div
                 className={`absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
-                  isScrolled ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
+                  shouldUseDarkText ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
                 }`}
                 initial={{ width: 0 }}
                 whileHover={{ width: '100%' }}
@@ -84,14 +95,14 @@ const Navbar = () => {
             <motion.a 
               href="#fabrics" 
               className={`font-medium transition-all duration-300 relative ${
-                isScrolled ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
+                shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
             >
               Fabrics
               <motion.div
                 className={`absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
-                  isScrolled ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
+                  shouldUseDarkText ? 'bg-[#0052FF]' : 'bg-[#C6FF00]'
                 }`}
                 initial={{ width: 0 }}
                 whileHover={{ width: '100%' }}
@@ -116,7 +127,7 @@ const Navbar = () => {
                     onClick={() => setIsSearchExpanded(true)}
                     transition={{ duration: 0.2 }}
                     className={`p-2 rounded-lg transition-all duration-300 ${
-                      isScrolled 
+                      shouldUseDarkText 
                         ? 'bg-white/10 hover:bg-white/20 text-[#212121]' 
                         : 'bg-white/10 hover:bg-white/20 text-white'
                     }`}
@@ -135,7 +146,7 @@ const Navbar = () => {
                   >
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Search className={`h-4 w-4 ${
-                        isScrolled ? 'text-gray-400' : 'text-gray-300'
+                        shouldUseDarkText ? 'text-gray-400' : 'text-gray-300'
                       }`} />
                     </div>
                     <input
@@ -150,7 +161,7 @@ const Navbar = () => {
                       }}
                       autoFocus
                       className={`pl-10 pr-10 py-2 w-64 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
-                        isScrolled 
+                        shouldUseDarkText 
                           ? 'bg-white border-gray-300 text-[#212121] placeholder-gray-500' 
                           : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
                       }`}
@@ -161,7 +172,7 @@ const Navbar = () => {
                         setSearchQuery('');
                       }}
                       className={`absolute right-3 p-1 rounded-full transition-colors duration-200 ${
-                        isScrolled 
+                        shouldUseDarkText 
                           ? 'hover:bg-gray-200 text-gray-400 hover:text-gray-600' 
                           : 'hover:bg-white/20 text-gray-300 hover:text-white'
                       }`}
@@ -179,7 +190,7 @@ const Navbar = () => {
               whileTap={{ scale: 0.95 }}
               onClick={handleWhatsAppClick}
               className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 ${
-                isScrolled 
+                shouldUseDarkText 
                   ? 'bg-[#C6FF00] text-[#212121] hover:bg-[#B8E600]' 
                   : 'bg-[#C6FF00] text-[#212121] hover:bg-[#B8E600]'
               }`}
@@ -190,13 +201,13 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden"
+            className="lg:hidden p-1"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className={`h-6 w-6 ${isScrolled ? 'text-[#212121]' : 'text-white'}`} />
+              <X className={`h-5 w-5 sm:h-6 sm:w-6 ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
             ) : (
-              <Menu className={`h-6 w-6 ${isScrolled ? 'text-[#212121]' : 'text-white'}`} />
+              <Menu className={`h-5 w-5 sm:h-6 sm:w-6 ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
             )}
           </button>
         </div>
@@ -207,16 +218,16 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`lg:hidden mt-2 rounded-lg p-4 shadow-xl ${
-              isScrolled ? 'bg-white' : 'bg-black'
+            className={`lg:hidden mt-2 rounded-lg p-3 sm:p-4 shadow-xl ${
+              shouldUseDarkText ? 'bg-white' : 'bg-black'
             }`}
           >
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3 sm:space-y-4">
               {/* Mobile Search Bar */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Search className={`h-4 w-4 ${
-                    isScrolled ? 'text-gray-400' : 'text-gray-300'
+                    shouldUseDarkText ? 'text-gray-400' : 'text-gray-300'
                   }`} />
                 </div>
                 <input
@@ -224,8 +235,8 @@ const Navbar = () => {
                   placeholder="Search kits..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`pl-10 pr-4 py-2 w-full rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
-                    isScrolled 
+                  className={`pl-10 pr-4 py-2 sm:py-2 w-full rounded-lg border text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
+                    shouldUseDarkText 
                       ? 'bg-gray-50 border-gray-300 text-[#212121] placeholder-gray-500' 
                       : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
                   }`}
@@ -235,8 +246,8 @@ const Navbar = () => {
               {/* Navigation Links */}
               <a 
                 href="#products" 
-                className={`font-medium transition-colors duration-200 ${
-                  isScrolled 
+                className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
+                  shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
                 }`}
@@ -246,8 +257,8 @@ const Navbar = () => {
               </a>
               <a 
                 href="#about" 
-                className={`font-medium transition-colors duration-200 ${
-                  isScrolled 
+                className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
+                  shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
                 }`}
@@ -257,8 +268,8 @@ const Navbar = () => {
               </a>
               <a 
                 href="#fabrics" 
-                className={`font-medium transition-colors duration-200 ${
-                  isScrolled 
+                className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
+                  shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
                 }`}
@@ -273,7 +284,7 @@ const Navbar = () => {
                   handleWhatsAppClick();
                   setIsMobileMenuOpen(false);
                 }}
-                className="px-4 py-2 bg-[#C6FF00] text-[#212121] hover:bg-[#B8E600] rounded-lg font-semibold transition-all duration-200"
+                className="px-3 py-2 sm:px-4 sm:py-2 bg-[#C6FF00] text-[#212121] hover:bg-[#B8E600] rounded-lg font-semibold text-sm sm:text-base transition-all duration-200"
               >
                 Contact Us
               </motion.button>

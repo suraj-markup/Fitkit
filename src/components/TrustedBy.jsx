@@ -125,7 +125,7 @@ const TrustedBy = () => {
           
           {/* Client logos carousel */}
           <div className="relative overflow-hidden bg-[#F8F9FA] rounded-xl py-4 sm:py-6 mb-12 sm:mb-16">
-            <div className="scroll-container">
+            <div className="scroll-container overflow-hidden">
               <div className="scroll-track">
                 {/* Multiple sets for seamless loop */}
                 {renderLogos('set1')}

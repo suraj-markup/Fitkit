@@ -37,7 +37,15 @@ function App() {
               <Footer />
             </>
           } />
-          <Route path="/products/*" element={<ProductsPage />} />
+          <Route path="/products/*" element={
+            <>
+              <Navbar />
+              <main>
+                <ProductsPage />
+              </main>
+              <Footer />
+            </>
+          } />
         </Routes>
       </div>
     </Router>

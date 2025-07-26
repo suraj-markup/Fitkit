@@ -198,7 +198,27 @@ const ExploreKits = () => {
     }
   };
 
-  const products = [basketballProduct, footballProduct, cricketProduct, badmintonProduct, volleyballProduct];
+  const tennisProduct = {
+    sport: "Tennis",
+    images: {
+      "TEN1": fabricImages.tennis["UV-Protected Polyester"],
+      "TEN2": fabricImages.tennis["Honeycomb Knit"],
+      "TEN3": fabricImages.tennis["Mesh Polyester"],
+    },
+    tags: ["TEN1", "TEN2", "TEN3"],
+    fabricName: {
+        "TEN1": "UV-Protected Polyester",
+        "TEN2": "Honeycomb Knit",
+        "TEN3": "Mesh Polyester"
+    },
+    descriptions: {
+      "TEN1": "Advanced UV protection technology to shield players from harmful sun rays during outdoor matches.",
+      "TEN2": "Innovative honeycomb knit structure for enhanced breathability and comfort during play.",
+      "TEN3": "Professional mesh polyester with superior ventilation and lightweight performance."
+    }
+  };
+
+  const products = [basketballProduct, footballProduct, cricketProduct, badmintonProduct, volleyballProduct, tennisProduct];
 
   const categories = [
     {
@@ -320,10 +340,7 @@ const ExploreKits = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  const message = encodeURIComponent("Hello FITKIT, I'd like to see all sports products!");
-                  window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
-                }}
+                onClick={() => navigate('/products')}
                 className="text-[#0052FF] font-medium hover:text-[#C6FF00] transition-colors duration-200"
               >
                 View All →
@@ -347,6 +364,7 @@ const ExploreKits = () => {
                     descriptions={product.descriptions}
                     onTagClick={(tag) => handleTagClick(tag, index)}
                     fabricName={product.fabricName}
+                    onImageClick={() => navigate(`/products?sport=${product.sport.toLowerCase()}`)}
                   />
                 </motion.div>
               ))}
@@ -368,10 +386,7 @@ const ExploreKits = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  const message = encodeURIComponent("Hello FITKIT, I'd like to see all category products!");
-                  window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
-                }}
+                onClick={() => navigate('/products')}
                 className="text-[#0052FF] font-medium hover:text-[#C6FF00] transition-colors duration-200"
               >
                 View All →
@@ -401,10 +416,7 @@ const ExploreKits = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              const message = encodeURIComponent("Hello FITKIT, I'd like to explore all your products!");
-              window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
-            }}
+            onClick={() => navigate('/products')}
             className="btn-primary"
           >
             View All Products

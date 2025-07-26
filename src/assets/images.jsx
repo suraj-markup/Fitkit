@@ -69,23 +69,21 @@ import UVProtection2 from './Interlock Polyester Mesh/interlock.jpg';
 import UVProtection3 from './Interlock Polyester Mesh/Bjersey.jpeg';
 import UVProtection4 from './Interlock Polyester Mesh/TTjersey.jpg';
 
-// Tennis Fabric Images - Dri-FIT Technology
-import DriFit1 from './Dry-Fit Dot Mesh/Dry-Fit Dot Mesh.avif';
-import DriFit2 from './Dry-Fit Dot Mesh/dotknit.webp';
-import DriFit3 from './Dry-Fit Dot Mesh/Bjersey.jpg';
-import DriFit4 from './Dot-Knit Polyester/dotknit.webp';
+// Tennis Fabric Images - UV-Protected
+import UV1 from './UV-Protected Polyester/UV-Protected Polyester.jpg';
+import UV2 from './UV-Protected Polyester/TJersey.jpg';
+import UV3 from './UV-Protected Polyester/benefit.png';
 
-// Tennis Fabric Images - Stretch Fabric
-import StretchFabric1 from './Dot-Knit Polyester/dotknit-polyster.jpg';
-import StretchFabric2 from './Dot-Knit Polyester/basketball Jersey.png';
-import StretchFabric3 from './Dot-Knit Polyester/Bjersey.jpeg';
-import StretchFabric4 from './Cotton-Poly Piqué/Cotton-Poly-Pique.jpg';
 
-// Tennis Fabric Images - Breathable Mesh
-import BreathableMesh1 from './Cotton-Poly Piqué/Cotton-Poly Piqué1.jpg';
-import BreathableMesh2 from './Cotton-Poly Piqué/Cotton-Poly Piqué jersey.webp';
-import BreathableMesh3 from './Cotton-Poly Piqué/Archery jersey.jpeg';
-import BreathableMesh4 from './Polyester-Spandex (Lycra)/Polyester-Spandex.jpg';
+// Tennis Fabric Images - Honeycomb Knit
+import Honeycomb1 from './Honeycomb Knit/Honeycomb Knit.jpeg';
+import Honeycomb2 from './Honeycomb Knit/Tjersey.jpg';
+import Honeycomb3 from './Honeycomb Knit/Tjersey2.webp';
+
+// Tennis Fabric Images - Mesh Polyester
+import Mesh1 from './Mesh Knit/Mesh knit.jpeg';
+import Mesh2 from './Mesh Knit/TT jesrsey.webp';
+import Mesh3 from './Mesh Knit/mesh-warp-knitted-fabric.jpg';
 
 // Badminton Fabric Images - Microfiber Polyester
 import MicrofiberPolyester1 from './Microfiber Polyester/Microfiber Polyester.avif';
@@ -172,23 +170,20 @@ export const fabricImages = {
     ]
   },
   tennis: {
-    "Dri-FIT Technology": [
-      DriFit1,
-      DriFit2,
-      DriFit3,
-      DriFit4
+    "UV-Protected Polyester": [
+      UV2,
+      UV1,
+      UV3
     ],
-    "Stretch Fabric": [
-      StretchFabric1,
-      StretchFabric2,
-      StretchFabric3,
-      StretchFabric4
+    "Honeycomb Knit": [
+      Honeycomb3,
+      Honeycomb2,
+      Honeycomb1,
     ],
-    "Breathable Mesh": [
-      BreathableMesh1,
-      BreathableMesh2,
-      BreathableMesh3,
-      BreathableMesh4
+    "Mesh Polyester": [
+      Mesh2,
+      Mesh1,
+      Mesh3
     ]
   },
   badminton: {
@@ -198,8 +193,8 @@ export const fabricImages = {
       MicrofiberPolyester2,
     ],
     "Dry-Fit Jersey Knit": [
-      DryFitJersey2,
       badminton2,
+      DryFitJersey2,
       DryFitJersey1,
 
     ],

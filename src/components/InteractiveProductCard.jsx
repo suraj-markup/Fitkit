@@ -8,12 +8,10 @@ const InteractiveProductCard = ({
   descriptions = {},
   onTagClick,
   fabricName,
+  onImageClick,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [activeTag, setActiveTag] = useState(tags[0] || 'BAS1');
-  const [isAutoSliding, setIsAutoSliding] = useState(false);
-  const slideIntervalRef = useRef(null);
 
   // Handle different image structures
   const getCurrentImages = () => {
@@ -57,40 +55,10 @@ const InteractiveProductCard = ({
     setCurrentImageIndex(0);
   }, [activeTag]);
 
-  // Auto-slide functionality
-  useEffect(() => {
-    if (isHovered && displayImages.length > 1) {
-      setIsAutoSliding(true);
-      slideIntervalRef.current = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % displayImages.length);
-      }, 1500);
-    } else {
-      setIsAutoSliding(false);
-      if (slideIntervalRef.current) {
-        clearInterval(slideIntervalRef.current);
-      }
-    }
 
-    return () => {
-      if (slideIntervalRef.current) {
-        clearInterval(slideIntervalRef.current);
-      }
-    };
-  }, [isHovered, displayImages.length]);
-
-  // Reset to first image when hover ends
-  useEffect(() => {
-    if (!isHovered) {
-      setCurrentImageIndex(0);
-    }
-  }, [isHovered]);
 
   const handleDotClick = (index) => {
     setCurrentImageIndex(index);
-    // Pause auto-sliding when user manually navigates
-    if (slideIntervalRef.current) {
-      clearInterval(slideIntervalRef.current);
-    }
   };
 
   const handleTagClick = (tag) => {
@@ -100,12 +68,16 @@ const InteractiveProductCard = ({
     }
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? displayImages.length - 1 : prev - 1
+    );
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => 
+      (prev + 1) % displayImages.length
+    );
   };
 
   return (
@@ -115,12 +87,14 @@ const InteractiveProductCard = ({
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="bg-white rounded-xl p-2 border border-blue-300 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+
+      className="bg-white rounded-xl p-2 border border-blue-300 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
     >
       {/* Image Slider Section */}
-      <div className="aspect-square rounded-xl relative overflow-hidden bg-gray-100">
+      <div 
+        className="aspect-square rounded-xl relative overflow-hidden bg-gray-100 cursor-pointer"
+        onClick={onImageClick}
+      >
         <AnimatePresence mode="wait">
           <motion.img
             key={`${activeTag}-${currentImageIndex}`}
@@ -158,19 +132,36 @@ const InteractiveProductCard = ({
           </motion.div>
         )}
 
-        {/* Progress Bar */}
-        {isAutoSliding && (
-          <motion.div
-            key={`${activeTag}-${currentImageIndex}`}
-            initial={{ width: 0 }}
-            animate={{ width: '100%' }}
-            transition={{ duration: 2.5, ease: 'linear' }}
-            className="absolute bottom-0 left-0 h-1 bg-white/30"
-          />
-        )}
+        {/* Navigation Buttons */}
+        {displayImages.length > 1 && (
+          <>
+            {/* Previous Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePreviousImage();
+              }}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-        {/* Color Indicator Dot */}
-        <div className="absolute top-4 left-4 w-3 h-3 bg-red-500 rounded-full border-2 border-white shadow-sm" />
+            {/* Next Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextImage();
+              }}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </>
+        )}
       </div>
 
       {/* Product Information */}
