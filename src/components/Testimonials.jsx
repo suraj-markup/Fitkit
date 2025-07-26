@@ -181,7 +181,7 @@ const Testimonials = () => {
             whileTap={{ scale: 0.95 }}
             onClick={() => {
               const message = encodeURIComponent("Hello FITKIT, I'd like to join your satisfied customers and order custom sportswear!");
-              window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+              window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
             }}
             className="btn-primary"
           >

@@ -221,6 +221,11 @@ const ProductsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showFilterHint, setShowFilterHint] = useState(true);
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const sports = [
     { id: 'basketball', name: 'Basketball' },
     { id: 'badminton', name: 'Badminton' },

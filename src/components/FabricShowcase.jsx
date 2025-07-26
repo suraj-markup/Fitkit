@@ -181,7 +181,7 @@ const FabricShowcase = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     const message = encodeURIComponent(`Hello FITKIT, I'm interested in the ${fabrics[activeTab].name} fabric!`);
-                    window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+                    window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
                   }}
                   className="mt-6 btn-primary w-full"
                 >

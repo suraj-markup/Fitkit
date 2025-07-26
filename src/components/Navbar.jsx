@@ -68,8 +68,8 @@ const Navbar = () => {
 
           {/* Centered Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-center space-x-8 flex-1">
-            <motion.a 
-              href="/products" 
+            <motion.button 
+              onClick={() => navigate('/products')}
               className={`font-medium transition-all duration-300 relative drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
@@ -83,7 +83,7 @@ const Navbar = () => {
                 initial={{ width: 0 }}
                 whileHover={{ width: '100%' }}
               />
-            </motion.a>
+            </motion.button>
             <motion.a 
               href="#about" 
               className={`font-medium transition-all duration-300 relative drop-shadow-sm ${
@@ -252,17 +252,19 @@ const Navbar = () => {
               </div>
               
               {/* Navigation Links */}
-              <a 
-                href="/products" 
+              <button 
+                onClick={() => {
+                  navigate('/products');
+                  setIsMobileMenuOpen(false);
+                }}
                 className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
                   shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Products
-              </a>
+              </button>
               <a 
                 href="#about" 
                 className={`font-medium text-sm sm:text-base transition-colors duration-200 ${

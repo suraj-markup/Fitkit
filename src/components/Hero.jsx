@@ -39,7 +39,7 @@ const Hero = () => {
 
     const handleWhatsAppClick = () => {
         const message = encodeURIComponent("Hello FITKIT, I'm interested in customizing my team's kit!");
-        window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+        window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
     };
 
     const nextImage = () => {
