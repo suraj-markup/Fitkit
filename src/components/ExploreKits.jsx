@@ -73,14 +73,14 @@ const CategoryCard = ({ category, index, onClick }) => {
             {category.description}
           </p>
           <div className="flex flex-wrap gap-2">
-            {category.sports.slice(0, 2).map((sport, idx) => (
+            {category.fabrics.slice(0, 2).map((fabric, idx) => (
               <span key={idx} className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
-                {sport}
+                {fabric}
               </span>
             ))}
-            {category.sports.length > 2 && (
+            {category.fabrics.length > 2 && (
               <span className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
-                +{category.sports.length - 2} more
+                +{category.fabrics.length - 2} more
               </span>
             )}
           </div>
@@ -220,41 +220,144 @@ const ExploreKits = () => {
 
   const products = [basketballProduct, footballProduct, cricketProduct, badmintonProduct, volleyballProduct, tennisProduct];
 
+  // Changer's Wear Products
+  const tracksuitProduct = {
+    sport: "Tracksuits",
+    images: {
+      "TRA1": fabricImages.tracksuits["French Terry"],
+      "TRA2": fabricImages.tracksuits["Softshell Polyester"],
+      "TRA3": fabricImages.tracksuits["Nylon-Spandex (Premium)"],
+      "TRA4": fabricImages.tracksuits["Interlock Polyester"],
+      "TRA5": fabricImages.tracksuits["Micro Polyester"],
+      "TRA6": fabricImages.tracksuits["Poly Taslan"],
+    },
+    tags: ["TRA1", "TRA2", "TRA3", "TRA4", "TRA5", "TRA6"],
+    fabricName: {
+      "TRA1": "French Terry",
+      "TRA2": "Softshell Polyester", 
+      "TRA3": "Nylon-Spandex (Premium)",
+      "TRA4": "Interlock Polyester",
+      "TRA5": "Micro Polyester",
+      "TRA6": "Poly Taslan",
+    },
+    descriptions: {
+      "TRA1": "Cotton-poly loopback knit that's warm, absorbent, and training-friendly for comfortable tracksuit wear.",
+      "TRA2": "Technical outerwear fabric with water-resistant, windproof properties and soft inner for premium tracksuits.",
+      "TRA3": "Stretchy and soft high-performance blend with 4-way stretch, sleek body-fit, and sweat-wicking properties.",
+      "TRA4": "Double-knit polyester with smooth surface, durable, printable, and retains shape well.",
+      "TRA5": "Lightweight, woven polyester that's breathable, great for sublimation and summer use.",
+      "TRA6": "Crisp-feel coated polyester that's water-repellent, used in bottoms and jackets."
+    }
+  };
+
+  const lowersProduct = {
+    sport: "Lowers / Joggers",
+    images: {
+      "LOW1": fabricImages.lowers["Polyester-Spandex"],
+      "LOW2": fabricImages.lowers["French Terry"],
+      "LOW3": fabricImages.lowers["Lycra-Cotton Blend"],
+      "LOW4": fabricImages.lowers["Interlock Knit"],
+      "LOW5": fabricImages.lowers["Loop Knit"],
+    },
+    tags: ["LOW1", "LOW2", "LOW3", "LOW4", "LOW5"],
+    fabricName: {
+      "LOW1": "Polyester-Spandex",
+      "LOW2": "French Terry",
+      "LOW3": "Lycra-Cotton Blend",
+      "LOW4": "Interlock Knit",
+      "LOW5": "Loop Knit",
+    },
+    descriptions: {
+      "LOW1": "Stretch knit for athletic movement with flexible, moisture-wicking, and shape retention properties.",
+      "LOW2": "Soft and absorbent with comfortable fit, ideal for everyday and training joggers.",
+      "LOW3": "Cotton stretch fabric that's breathable, flexible, perfect for casual activewear.",
+      "LOW4": "Dense double-knit fabric with premium finish quality and good printability.",
+      "LOW5": "Structured feel with warmth, ideal for winter training pants with textured appearance."
+    }
+  };
+
+  const varsityProduct = {
+    sport: "Varsity Jackets",
+    images: {
+      "VAR1": fabricImages.varsityjackets["Wool Blend + PU Leather Sleeves"],
+      "VAR2": fabricImages.varsityjackets["Spacer Fabric (3D Knit)"],
+      "VAR3": fabricImages.varsityjackets["Brushed Polyester Fleece"],
+      "VAR4": fabricImages.varsityjackets["Poly-Cotton Twill"],
+      "VAR5": fabricImages.varsityjackets["Interlock Knit Polyester"],
+    },
+    tags: ["VAR1", "VAR2", "VAR3", "VAR4", "VAR5"],
+    fabricName: {
+      "VAR1": "Wool Blend + PU Leather Sleeves",
+      "VAR2": "Spacer Fabric (3D Knit)",
+      "VAR3": "Brushed Polyester Fleece",
+      "VAR4": "Poly-Cotton Twill",
+      "VAR5": "Interlock Knit Polyester",
+    },
+    descriptions: {
+      "VAR1": "Classic varsity jacket material that's warm, structured, perfect for college-style identity.",
+      "VAR2": "Premium technical fabric with soft volume, breathable, structured, and wrinkle-resistant.",
+      "VAR3": "Warm brushed inner with smooth outer, lightweight for winter use in varsity jackets.",
+      "VAR4": "Stiff, durable woven fabric that's good for embroidery and patches with professional appearance.",
+      "VAR5": "Modern knit option for lightweight varsity styles, soft and sporty, wearable in all seasons."
+    }
+  };
+
+  const hoodieProduct = {
+    sport: "Hoodies",
+    images: {
+      "HOO1": fabricImages.hoodies["French Terry (Cotton-Poly)"],
+      "HOO2": fabricImages.hoodies["Cotton Fleece"],
+      "HOO3": fabricImages.hoodies["Polyester Fleece"],
+      "HOO4": fabricImages.hoodies["Loop Knit Fabric"],
+      "HOO5": fabricImages.hoodies["Melange Cotton Fleece"],
+    },
+    tags: ["HOO1", "HOO2", "HOO3", "HOO4", "HOO5"],
+    fabricName: {
+      "HOO1": "French Terry (Cotton-Poly)",
+      "HOO2": "Cotton Fleece",
+      "HOO3": "Polyester Fleece",
+      "HOO4": "Loop Knit Fabric",
+      "HOO5": "Melange Cotton Fleece",
+    },
+    descriptions: {
+      "HOO1": "Loop-back knit with smooth outer and soft inner, mid-weight, breathable, suitable for all seasons.",
+      "HOO2": "Brushed inside, soft cotton-based fabric that's cozy, insulating, ideal for winter hoodies.",
+      "HOO3": "Brushed polyester knit with lightweight warmth, shrink-resistant, and fast-drying properties.",
+      "HOO4": "Looped interior with textured outer, structured design, durable construction, winter-ready.",
+      "HOO5": "Heathered cotton fleece blend with stylish appearance, soft feel, perfect for casual wear."
+    }
+  };
+
+  const changersWearProducts = [tracksuitProduct, lowersProduct, varsityProduct, hoodieProduct];
+
   const categories = [
-    {
-      id: 'jerseys',
-      name: 'Jerseys',
-      icon: '👕',
-      description: 'Professional sports jerseys',
-      sports: ['Basketball', 'Football', 'Cricket', 'Tennis', 'Badminton', 'Volleyball']
-    },
-    {
-      id: 'shorts',
-      name: 'Shorts',
-      icon: '🩳',
-      description: 'Performance sports shorts',
-      sports: ['Basketball', 'Football', 'Tennis', 'Badminton', 'Volleyball']
-    },
     {
       id: 'tracksuits',
       name: 'Tracksuits',
-      icon: '👟',
+      icon: '🏃‍♂️',
       description: 'Complete training tracksuits',
-      sports: ['All Sports', 'Training', 'Warm-up', 'Casual']
+      fabrics: ['French Terry', 'Softshell Polyester', 'Nylon-Spandex (Premium)']
+    },
+    {
+      id: 'lowers',
+      name: 'Lowers / Joggers',
+      icon: '👖',
+      description: 'Athletic lowers and joggers',
+      fabrics: ['Polyester-Spandex', 'French Terry', 'Lycra-Cotton Blend']
+    },
+    {
+      id: 'varsityjackets',
+      name: 'Varsity Jackets',
+      icon: '🧥',
+      description: 'Team varsity jackets',
+      fabrics: ['Wool Blend + PU Leather', 'Spacer Fabric (3D Knit)', 'Brushed Polyester Fleece']
     },
     {
       id: 'hoodies',
       name: 'Hoodies',
-      icon: '🧥',
+      icon: '👕',
       description: 'Comfortable sports hoodies',
-      sports: ['All Sports', 'Training', 'Casual', 'Warm-up']
-    },
-    {
-      id: 'jackets',
-      name: 'Varsity Jackets',
-      icon: '🧥',
-      description: 'Team varsity jackets',
-      sports: ['All Sports', 'Team Wear', 'Casual', 'Premium']
+      fabrics: ['French Terry (Cotton-Poly)', 'Cotton Fleece', 'Polyester Fleece']
     }
   ];
 
@@ -322,7 +425,7 @@ const ExploreKits = () => {
                   : 'text-[#212121] hover:bg-[#0052FF] hover:text-white'
               }`}
             >
-              Shop by Category
+              Changer's Wear
             </motion.button>
           </div>
         </motion.div>
@@ -373,7 +476,7 @@ const ExploreKits = () => {
           </motion.div>
         )}
 
-        {/* Categories Section */}
+        {/* Categories Section - Changer's Wear */}
         {activeSection === 'categories' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -382,26 +485,40 @@ const ExploreKits = () => {
             className="mb-12"
           >
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-bold text-[#212121]">Shop by Category</h3>
+              <h3 className="text-2xl font-bold text-[#212121]">Changer's Wear Collection</h3>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/products')}
+                onClick={() => navigate('/products?category=tracksuits')}
                 className="text-[#0052FF] font-medium hover:text-[#C6FF00] transition-colors duration-200"
               >
                 View All →
               </motion.button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories.map((category, index) => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  index={index}
-                  onClick={() => handleCategoryClick(category.id)}
-                />
+            
+            {/* Interactive Product Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {changersWearProducts.map((product, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <InteractiveProductCard
+                    images={product.images} // Pass the entire images object
+                    sport={product.sport}
+                    tags={product.tags}
+                    descriptions={product.descriptions}
+                    onTagClick={(tag) => handleTagClick(tag, index + 100)} // Offset to avoid conflicts
+                    fabricName={product.fabricName}
+                    onImageClick={() => navigate(`/products?category=${product.sport.toLowerCase().replace(/\s+/g, '').replace('/', '')}`)}
+                  />
+                </motion.div>
               ))}
             </div>
+
           </motion.div>
         )}
 

@@ -1,36 +1,48 @@
 import { motion } from 'framer-motion';
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent("Hello FITKIT, I have a question about your services!");
-    window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
+  };
+
+  const handleLinkClick = (href, e) => {
+    if (href.startsWith('/')) {
+      e.preventDefault();
+      navigate(href);
+    }
   };
 
   const socialLinks = [
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" }
+    { 
+      icon: Instagram, 
+      href: "https://www.instagram.com/fitkit_sportswear/", 
+      label: "Instagram" 
+    },
+
   ];
 
   const quickLinks = [
-    { name: "Home", href: "#" },
-    { name: "Products", href: "#products" },
+    { name: "Home", href: "/" },
+    { name: "Products", href: "/products" },
     { name: "About Us", href: "#about" },
-    { name: "Fabrics", href: "#fabrics" }
+    { name: "Fabrics", href: "/products" }
   ];
 
   const sports = [
-    "Basketball",
-    "Football", 
-    "Cricket",
-    "Tennis",
-    "Badminton"
+    { name: "Basketball", href: "/products?sport=basketball" },
+    { name: "Football", href: "/products?sport=football" }, 
+    { name: "Cricket", href: "/products?sport=cricket" },
+    { name: "Tennis", href: "/products?sport=tennis" },
+    { name: "Badminton", href: "/products?sport=badminton" }
   ];
 
   const contactInfo = [
-    { icon: Phone, text: "+91 12345 67890", href: "tel:+911234567890" },
-    { icon: Mail, text: "info@fitkit.com", href: "mailto:info@fitkit.com" },
-    { icon: MapPin, text: "Mumbai, Maharashtra, India", href: "#" }
+    { icon: Phone, text: "+91 70146 80160", href: "tel:+917014680160" },
   ];
 
   return (
@@ -80,7 +92,8 @@ const Footer = () => {
                 >
                   <a 
                     href={link.href}
-                    className="text-gray-300 hover:text-[#C6FF00] transition-colors duration-200"
+                    onClick={(e) => handleLinkClick(link.href, e)}
+                    className="text-gray-300 hover:text-[#C6FF00] transition-colors duration-200 cursor-pointer"
                   >
                     {link.name}
                   </a>
@@ -108,10 +121,11 @@ const Footer = () => {
                   viewport={{ once: true }}
                 >
                   <a 
-                    href="#"
-                    className="text-gray-300 hover:text-[#C6FF00] transition-colors duration-200"
+                    href={sport.href}
+                    onClick={(e) => handleLinkClick(sport.href, e)}
+                    className="text-gray-300 hover:text-[#C6FF00] transition-colors duration-200 cursor-pointer"
                   >
-                    {sport}
+                    {sport.name}
                   </a>
                 </motion.li>
               ))}
@@ -134,6 +148,8 @@ const Footer = () => {
                 <motion.a
                   key={index}
                   href={contact.href}
+                  target={contact.href.startsWith('http') ? '_blank' : undefined}
+                  rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
@@ -154,6 +170,8 @@ const Footer = () => {
                   <motion.a
                     key={index}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.2, y: -2 }}
                     whileTap={{ scale: 0.9 }}
                     initial={{ opacity: 0, scale: 0 }}
@@ -180,7 +198,7 @@ const Footer = () => {
           className="border-t border-gray-700 mt-12 pt-8 text-center"
         >
           <p className="text-gray-400 text-sm">
-            © 2024 FITKIT. All rights reserved. | Crafting Champions, One Kit at a Time.
+            © {new Date().getFullYear()} FITKIT. All rights reserved. | Crafting Champions, One Kit at a Time.
           </p>
         </motion.div>
       </div>

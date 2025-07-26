@@ -17,6 +17,14 @@ const Navbar = () => {
   
   // Determine text colors - always dark on products page, dynamic on home page
   const shouldUseDarkText = isProductsPage || isScrolled;
+  
+  // Enhanced background for better visibility over dark content
+  const getNavbarBackground = () => {
+    if (isProductsPage) {
+      return isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md';
+    }
+    return isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-black/20 backdrop-blur-sm';
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +37,7 @@ const Navbar = () => {
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent("Hello FITKIT, I'm interested in a custom kit order.");
-    window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
   };
 
   return (
@@ -37,7 +45,7 @@ const Navbar = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-transparent shadow-lg backdrop-blur-sm ' : 'bg-transparent backdrop-blur-sm '}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${getNavbarBackground()} ${isScrolled ? 'shadow-lg' : ''}`}
     >
       <div className="container-custom">
         <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
@@ -49,10 +57,10 @@ const Navbar = () => {
           >
             <img src={fitkitLogo} alt="FITKIT" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full" />
             <div className="flex flex-col">
-              <span className={`text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 ${
+              <span className={`text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121]' : 'text-white'
               }`}>FIT KIT</span>
-              <span className={`text-xs transition-colors duration-300 hidden sm:block ${
+              <span className={`text-xs transition-colors duration-300 hidden sm:block drop-shadow-sm ${
                 shouldUseDarkText ? 'text-gray-600' : 'text-gray-200'
               }`}>Engineered for Every Game</span>
             </div>
@@ -61,8 +69,8 @@ const Navbar = () => {
           {/* Centered Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-center space-x-8 flex-1">
             <motion.a 
-              href="#products" 
-              className={`font-medium transition-all duration-300 relative ${
+              href="/products" 
+              className={`font-medium transition-all duration-300 relative drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -78,7 +86,7 @@ const Navbar = () => {
             </motion.a>
             <motion.a 
               href="#about" 
-              className={`font-medium transition-all duration-300 relative ${
+              className={`font-medium transition-all duration-300 relative drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -92,9 +100,9 @@ const Navbar = () => {
                 whileHover={{ width: '100%' }}
               />
             </motion.a>
-            <motion.a 
-              href="#fabrics" 
-              className={`font-medium transition-all duration-300 relative ${
+            {/* <motion.a 
+              href="#" 
+              className={`font-medium transition-all duration-300 relative drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121] hover:text-[#0052FF]' : 'text-white hover:text-[#C6FF00]'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -107,7 +115,7 @@ const Navbar = () => {
                 initial={{ width: 0 }}
                 whileHover={{ width: '100%' }}
               />
-            </motion.a>
+            </motion.a> */}
           </div>
 
           {/* Right Side - Search and Contact Button */}
@@ -201,13 +209,13 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-1"
+            className="lg:hidden p-1 rounded-md"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className={`h-5 w-5 sm:h-6 sm:w-6 ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
+              <X className={`h-5 w-5 sm:h-6 sm:w-6 drop-shadow-sm ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
             ) : (
-              <Menu className={`h-5 w-5 sm:h-6 sm:w-6 ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
+              <Menu className={`h-5 w-5 sm:h-6 sm:w-6 drop-shadow-sm ${shouldUseDarkText ? 'text-[#212121]' : 'text-white'}`} />
             )}
           </button>
         </div>
@@ -218,8 +226,8 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`lg:hidden mt-2 rounded-lg p-3 sm:p-4 shadow-xl ${
-              shouldUseDarkText ? 'bg-white' : 'bg-black'
+            className={`lg:hidden mt-2 rounded-lg p-3 sm:p-4 shadow-xl backdrop-blur-lg ${
+              shouldUseDarkText ? 'bg-white/98 border border-gray-200' : 'bg-black/95 border border-white/10'
             }`}
           >
             <div className="flex flex-col space-y-3 sm:space-y-4">
@@ -245,7 +253,7 @@ const Navbar = () => {
               
               {/* Navigation Links */}
               <a 
-                href="#products" 
+                href="/products" 
                 className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
                   shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
@@ -266,7 +274,7 @@ const Navbar = () => {
               >
                 About Us
               </a>
-              <a 
+              {/* <a 
                 href="#fabrics" 
                 className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
                   shouldUseDarkText 
@@ -276,7 +284,7 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Fabrics
-              </a>
+              </a> */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

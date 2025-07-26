@@ -16,7 +16,7 @@ function HomePage() {
       <Hero />
       <TrustedBy />
       <ExploreKits />
-      <FabricShowcase />
+      {/* <FabricShowcase /> */}
       <CustomizationProcess />
       <Testimonials />
     </>

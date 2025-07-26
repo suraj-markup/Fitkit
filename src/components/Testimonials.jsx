@@ -8,35 +8,27 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      quote: "FITKIT delivered exceptional quality jerseys for our basketball team. The customization options were incredible and the fabric quality exceeded our expectations. Our team looks and feels amazing on the court!",
-      customer: "John S.",
-      role: "Manager of FC Eagles",
+      quote: "FITKIT jerseys are game-changers! The quality is top-notch and the fit is perfect for basketball. What started as just ordering jerseys turned into a great friendship. The team at FITKIT really cares about their customers.",
+      customer: "Prince Tyagi",
+      role: "Basketball Player",
       rating: 5,
       sport: "Basketball"
     },
     {
       id: 2,
-      quote: "The attention to detail in our football kits is outstanding. From the initial design consultation to the final delivery, FITKIT made the entire process seamless. Highly recommended for any team!",
-      customer: "Sarah M.",
-      role: "Coach, Thunder FC",
+      quote: "Amazing experience with FITKIT! The jerseys are not just comfortable but also look professional. The customization was exactly what I wanted. Now we're good friends and I always recommend FITKIT to fellow players.",
+      customer: "Harsh Rao",
+      role: "Basketball Player",
       rating: 5,
-      sport: "Football"
+      sport: "Basketball"
     },
     {
       id: 3,
-      quote: "We've been using FITKIT for our cricket team uniforms for three seasons now. The durability and comfort of their fabrics is unmatched. The team loves the breathable material during long matches.",
-      customer: "Rajesh K.",
-      role: "Captain, Mumbai Lions",
+      quote: "FITKIT delivered beyond expectations! The fabric quality is exceptional and the jerseys perform great on court. The best part is the personal touch they add - we've become good friends through this journey.",
+      customer: "Saurab Baday",
+      role: "Basketball Player",
       rating: 5,
-      sport: "Cricket"
-    },
-    {
-      id: 4,
-      quote: "The custom tennis kits we ordered are absolutely perfect! The fit is excellent and the moisture-wicking technology keeps us comfortable during intense matches. FITKIT truly understands athletes' needs.",
-      customer: "Emma W.",
-      role: "Tennis Coach, Elite Academy",
-      rating: 5,
-      sport: "Tennis"
+      sport: "Basketball"
     }
   ];
 
@@ -70,9 +62,9 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-5xl mx-auto px-8">
           {/* Testimonial Cards */}
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-visible">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -80,7 +72,7 @@ const Testimonials = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white rounded-2xl p-8 md:p-12 shadow-xl"
+                className="bg-white rounded-2xl p-8 md:p-12 lg:p-16 shadow-xl mx-4 border border-gray-100"
               >
                 <div className="text-center">
                   {/* Quote Icon */}
@@ -112,7 +104,7 @@ const Testimonials = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="text-xl md:text-2xl text-gray-700 italic mb-8 leading-relaxed"
+                    className="text-xl md:text-2xl text-gray-700 italic mb-8 leading-relaxed px-4 md:px-8 lg:px-12"
                   >
                     "{testimonials[currentIndex].quote}"
                   </motion.blockquote>
@@ -144,7 +136,7 @@ const Testimonials = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={prevTestimonial}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F8F9FA] transition-colors duration-200"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-[#F8F9FA] transition-colors duration-200 z-10"
           >
             <ChevronLeft className="w-6 h-6 text-[#212121]" />
           </motion.button>
@@ -153,7 +145,7 @@ const Testimonials = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={nextTestimonial}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F8F9FA] transition-colors duration-200"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-[#F8F9FA] transition-colors duration-200 z-10"
           >
             <ChevronRight className="w-6 h-6 text-[#212121]" />
           </motion.button>

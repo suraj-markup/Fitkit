@@ -4,7 +4,7 @@ import { CheckCircle, ChevronLeft, ChevronRight, Filter, X } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom';
 import { fabricImages } from '../assets/images.jsx';
 
-const FabricCard = ({ fabricName, images, properties, index }) => {
+const FabricCard = ({ fabricName, images, properties, index, labelPrefix, currentDisplayName }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -18,9 +18,8 @@ const FabricCard = ({ fabricName, images, properties, index }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
       className="bg-white rounded-xl shadow-lg overflow-hidden mb-6 sm:mb-8 border border-gray-200"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
@@ -67,9 +66,9 @@ const FabricCard = ({ fabricName, images, properties, index }) => {
             )}
           </div>
           
-          {/* BAS Label */}
+          {/* Fabric Label */}
           <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-black/70 text-white px-2 sm:px-3 py-1 rounded text-sm sm:text-base lg:text-lg font-medium">
-            BAS{index + 1}
+            {labelPrefix}{index + 1}
           </div>
         </div>
 
@@ -82,9 +81,8 @@ const FabricCard = ({ fabricName, images, properties, index }) => {
               <motion.div
                 key={propIndex}
                 initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: propIndex * 0.1 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: (index * 0.1) + (propIndex * 0.05) }}
                 className="flex items-center space-x-3"
               >
                 <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-600 flex items-center justify-center flex-shrink-0">
@@ -99,8 +97,8 @@ const FabricCard = ({ fabricName, images, properties, index }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => {
-              const message = encodeURIComponent(`Hello FITKIT, I'm interested in the ${fabricName} fabric!`);
-              window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+              const message = encodeURIComponent(`Hello FITKIT, I'm interested in the ${fabricName} fabric for ${currentDisplayName}. Please share more details about pricing and availability.`);
+              window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
             }}
             className="mt-6 sm:mt-8 bg-[#0052FF] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-[#0041CC] transition-colors duration-200 w-full shadow-md text-sm sm:text-base"
           >
@@ -176,7 +174,7 @@ const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeC
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleSportChange(sport.id)}
                       className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
-                        activeSport === sport.id
+                        activeSport === sport.id && activeMode === 'sport'
                           ? 'bg-[#0052FF] text-white'
                           : 'text-[#212121] hover:bg-gray-100'
                       }`}
@@ -198,7 +196,7 @@ const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeC
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleCategoryChange(category)}
                       className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
-                        activeCategory === category
+                        activeCategory === category && activeMode === 'category'
                           ? 'bg-[#0052FF] text-white'
                           : 'text-[#212121] hover:bg-gray-100'
                       }`}
@@ -217,9 +215,9 @@ const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeC
 };
 
 const ProductsPage = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeSport, setActiveSport] = useState('basketball');
-  const [activeCategory, setActiveCategory] = useState('T-Shirts');
+  const [activeCategory, setActiveCategory] = useState('Tracksuits');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showFilterHint, setShowFilterHint] = useState(true);
 
@@ -229,10 +227,19 @@ const ProductsPage = () => {
     { id: 'football', name: 'Football' },
     { id: 'volleyball', name: 'Volleyball' },
     { id: 'tennis', name: 'Tennis' },
-    { id: 'cricket', name: 'Cricket' }
+    { id: 'cricket', name: 'Cricket' },
+    { id: 'boxing', name: 'Boxing' },
+    { id: 'archery', name: 'Archery' },
+    { id: 'swimming', name: 'Swimming' },
+    { id: 'tabletennis', name: 'Table Tennis' },
+    { id: 'kabaddi', name: 'Kabaddi' },
+    { id: 'hockey', name: 'Hockey' },
+    { id: 'handball', name: 'Handball' },
+    { id: 'netball', name: 'Netball' },
+    { id: 'kho-kho', name: 'Kho-Kho' },
   ];
 
-  const categories = ['T-Shirts', 'Hoodies', 'Lowers', 'Varsity Jackets', 'Tracksuits'];
+  const categories = ['Tracksuits', 'Lowers', 'Varsity Jackets', 'Hoodies'];
 
   // Fabric properties for different fabric types
   const fabricProperties = {
@@ -361,30 +368,400 @@ const ProductsPage = () => {
       "Professional appearance",
       "Comfortable wear",
       "Unique design"
+    ],
+    "Cotton-Poly Piqué": [
+      "Maximum comfort",
+      "Minimal distraction",
+      "Soft texture",
+      "Semi-absorbent",
+      "Light stretch"
+    ],
+    "Jersey Knit Cotton": [
+      "Easy to wear",
+      "Non-intense movement",
+      "Casual look",
+      "Natural feel",
+      "Breathable"
+    ],
+    "Compression Lycra": [
+      "Skin-tight support",
+      "High movement performance",
+      "Muscle-compression fit",
+      "Stretchable",
+      "Anti-roll hems"
+    ],
+    "Polyester-Spandex + Mesh Panels": [
+      "Combines flexibility with ventilation",
+      "Zoned ventilation",
+      "Tight fit",
+      "Movement-supportive",
+      "Enhanced breathability"
+    ],
+    "Dry-Fit Micro Polyester": [
+      "Feels light",
+      "Helps avoid overheating",
+      "Soft touch",
+      "Cooling finish",
+      "Wrinkle-free"
+    ],
+    "Mesh Knit Fabric": [
+      "Keeps sweat away",
+      "Indoor environments",
+      "Open mesh texture",
+      "Good airflow",
+      "Temperature control"
+    ],
+    "Interlock Knit": [
+      "Balanced comfort & durability",
+      "Flat surface",
+      "No pilling",
+      "Maintains color",
+      "Professional finish"
+    ],
+    "Chlorine-Resistant Nylon-Spandex": [
+      "Withstands pool chemicals",
+      "Ultra-stretch",
+      "Snug fit",
+      "Fade-resistant",
+      "Pool performance"
+    ],
+    "Polyester PBT": [
+      "Maintains shape",
+      "Ideal for racing swimwear",
+      "High elasticity",
+      "Low water absorption",
+      "Competition grade"
+    ],
+    "Lycra Blend Fabric": [
+      "Allows movement",
+      "Speeds drying",
+      "Thin fit",
+      "Smooth feel",
+      "Body-hugging"
+    ],
+    "Tough Polyester Interlock": [
+      "Sturdy for contact-heavy sport",
+      "Strong weave",
+      "Retains structure",
+      "Abrasion-resistant",
+      "Durable construction"
+    ],
+    "Dry-Fit Knit + Mesh": [
+      "Keeps sweat in check",
+      "Fast-paced play",
+      "Dual-panel design",
+      "Flexible",
+      "Keeps cool"
+    ],
+    "Stretchable Polyester": [
+      "Enables swift direction changes",
+      "Flexible",
+      "Lightweight",
+      "Quick dry",
+      "Movement freedom"
+    ],
+    "Mesh Dry-Fit": [
+      "Helps maintain airflow",
+      "Open-knit zones",
+      "Cool feel",
+      "Rapid sweat release",
+      "Ventilation focused"
+    ],
+    "Bird-Eye Fabric": [
+      "Durable and ventilated",
+      "Textured knit",
+      "Body fit",
+      "Wear-resistant",
+      "Professional texture"
+    ],
+    "Polyester Interlock with Spandex": [
+      "Comfortable for quick moves",
+      "Stretchy",
+      "Retains shape",
+      "Soft feel",
+      "Movement support"
+    ],
+    "Lightweight Dry-Fit": [
+      "Feels airy during games",
+      "Thin weave",
+      "Odor-resistant",
+      "Color-holding",
+      "Game performance"
+    ],
+    "Honeycomb Mesh": [
+      "Promotes airflow",
+      "Textured",
+      "Stylish",
+      "Open-cell knit",
+      "Enhanced ventilation"
+    ],
+    "Dry-Fit Mesh Fabric": [
+      "Keeps athletes dry",
+      "High sweat zones",
+      "Thin and breathable",
+      "Elastic support",
+      "Performance focused"
+    ],
+    "Airtex Polyester": [
+      "Feels light",
+      "Dries quickly",
+      "Perforated",
+      "Ultra-light",
+      "Stretchy"
+    ],
+    "Nylon-Spandex Knit": [
+      "Stretch for footwork",
+      "Speed enhancement",
+      "Comfortable",
+      "Tight fit",
+      "High elasticity"
+    ],
+    "Lycra Polyester": [
+      "Agility-focused stretch",
+      "Fast runners",
+      "4-way stretch",
+      "Flexible",
+      "Form-fitting"
+    ],
+    "Warp Knit Mesh": [
+      "Enhances ventilation",
+      "Comfort focused",
+      "Quick-dry",
+      "Low snag",
+      "Sporty texture"
+    ],
+    "Dot Knit Dry-Fit": [
+      "Ideal for long hours in heat",
+      "Sweat-wicking",
+      "Textured airflow zones",
+      "Heat management",
+      "Endurance focused"
+    ],
+
+    // Changer's Wear Fabric Properties
+    "Interlock Polyester": [
+      "Double-knit polyester with smooth surface",
+      "Durable construction",
+      "Excellent printability",
+      "Retains shape well",
+      "Professional finish"
+    ],
+    "Micro Polyester": [
+      "Lightweight, woven polyester",
+      "Breathable fabric",
+      "Great for sublimation",
+      "Summer use friendly",
+      "Quick-dry technology"
+    ],
+    "Softshell Polyester": [
+      "Technical outerwear fabric",
+      "Water-resistant properties",
+      "Windproof protection",
+      "Soft inner lining",
+      "Premium durability"
+    ],
+    "Poly Taslan": [
+      "Crisp-feel coated polyester",
+      "Water-repellent finish",
+      "Used in bottoms and jackets",
+      "Durable construction",
+      "Professional appearance"
+    ],
+    "French Terry": [
+      "Cotton-poly loopback knit",
+      "Warm and absorbent",
+      "Training-friendly",
+      "Comfortable fit",
+      "Versatile use"
+    ],
+    "Nylon-Spandex (Premium)": [
+      "Stretchy and soft high-performance blend",
+      "4-way stretch capability",
+      "Sleek appearance",
+      "Body-fit design",
+      "Sweat-wicking properties"
+    ],
+    "Lycra-Cotton Blend": [
+      "Cotton stretch fabric",
+      "Breathable material",
+      "Flexible movement",
+      "Casual activewear ideal",
+      "Natural comfort"
+    ],
+    "Interlock Knit": [
+      "Dense double-knit fabric",
+      "Premium finish quality",
+      "Good printability",
+      "Shape retention",
+      "Professional look"
+    ],
+    "Loop Knit": [
+      "Structured feel with warmth",
+      "Ideal for winter training pants",
+      "Textured appearance",
+      "Comfortable wear",
+      "Durable construction"
+    ],
+    "Wool Blend + PU Leather Sleeves": [
+      "Classic varsity jacket material",
+      "Warm and structured",
+      "College-style identity",
+      "Premium appearance",
+      "Heritage look"
+    ],
+    "Poly-Cotton Twill": [
+      "Stiff, durable woven fabric",
+      "Good for embroidery and patches",
+      "Professional appearance",
+      "Long-lasting quality",
+      "Easy maintenance"
+    ],
+    "Interlock Knit Polyester": [
+      "Modern knit option for lightweight varsity styles",
+      "Soft and sporty",
+      "Wearable in all seasons",
+      "Comfortable fit",
+      "Contemporary look"
+    ],
+    "Brushed Polyester Fleece": [
+      "Warm brushed inner",
+      "Smooth outer surface",
+      "Lightweight winter use",
+      "Comfortable warmth",
+      "Easy care"
+    ],
+    "Spacer Fabric (3D Knit)": [
+      "Premium technical fabric with soft volume",
+      "Breathable construction",
+      "Structured appearance",
+      "Wrinkle-resistant",
+      "Advanced engineering"
+    ],
+    "French Terry (Cotton-Poly)": [
+      "Loop-back knit with smooth outer and soft inner",
+      "Mid-weight fabric",
+      "Breathable material",
+      "Suitable for all seasons",
+      "Versatile comfort"
+    ],
+    "Cotton Fleece": [
+      "Brushed inside, soft cotton-based fabric",
+      "Cozy and insulating",
+      "Ideal for winter",
+      "Natural warmth",
+      "Comfortable wear"
+    ],
+    "Polyester Fleece": [
+      "Brushed polyester knit",
+      "Lightweight warmth",
+      "Shrink-resistant",
+      "Fast-drying properties",
+      "Easy maintenance"
+    ],
+    "Loop Knit Fabric": [
+      "Looped interior, textured outer",
+      "Structured design",
+      "Durable construction",
+      "Winter-ready",
+      "Contemporary look"
+    ],
+    "Melange Cotton Fleece": [
+      "Heathered cotton fleece blend",
+      "Stylish appearance",
+      "Soft feel",
+      "Perfect for casual or post-match wear",
+      "Premium comfort"
     ]
   };
 
   // Handle URL parameters on component mount
   useEffect(() => {
     const sportParam = searchParams.get('sport');
+    const categoryParam = searchParams.get('category');
+    
+    // Priority: Category (changer's wear) takes precedence over sport
+    if (categoryParam) {
+      // Handle changer's wear categories with different naming conventions
+      const categoryMappings = {
+        'tracksuits': 'Tracksuits',
+        'lowers': 'Lowers',
+        'varsityjackets': 'Varsity Jackets',
+        'hoodies': 'Hoodies',
+        'lowersjoggers': 'Lowers'
+      };
+      
+      const mappedCategory = categoryMappings[categoryParam.toLowerCase()] || categoryParam;
+      if (categories.includes(mappedCategory)) {
+        setActiveCategory(mappedCategory);
+        setActiveMode('category');
+        // Clear sport parameter if category is present
+        if (sportParam) {
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.delete('sport');
+          setSearchParams(newSearchParams, { replace: true });
+        }
+        return; // Exit early to prevent sport handling
+      }
+    }
+    
+    // Only handle sport if no valid category is present
     if (sportParam && sports.find(s => s.id === sportParam)) {
       setActiveSport(sportParam);
+      setActiveMode('sport');
+      // Reset to default category when viewing sports
+      setActiveCategory('Tracksuits');
+    } else if (!categoryParam && !sportParam) {
+      // Default state - show sports mode
+      setActiveMode('sport');
     }
-  }, [searchParams]);
+  }, [searchParams, sports, categories]);
 
   const handleSportChange = (sportId) => {
     setActiveSport(sportId);
+    setActiveMode('sport');
     setIsFilterOpen(false); // Close filter on mobile after selection
+    
+    // Update URL parameters - clear category when selecting sport
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('sport', sportId);
+    newSearchParams.delete('category'); // Remove category to avoid conflicts
+    setSearchParams(newSearchParams);
+    
+    // Reset to default category when switching to sports
+    setActiveCategory('Tracksuits');
   };
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
+    setActiveMode('category');
     setIsFilterOpen(false); // Close filter on mobile after selection
+    
+    // Update URL parameters - clear sport when selecting category
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('category', category.toLowerCase().replace(/\s+/g, '').replace('/', ''));
+    newSearchParams.delete('sport'); // Remove sport to avoid conflicts
+    setSearchParams(newSearchParams);
+    
+    // Reset to default sport when switching to changer's wear
+    setActiveSport('basketball');
   };
 
   const getCurrentFabrics = () => {
-    const sportFabrics = fabricImages[activeSport] || {};
-    return Object.entries(sportFabrics).map(([fabricName, images]) => ({
+    // Check if we're viewing a changer's wear category based on activeMode
+    const changersWearCategories = ['tracksuits', 'lowers', 'varsityjackets', 'hoodies'];
+    const categoryKey = activeCategory.toLowerCase().replace(/\s+/g, '').replace('/', '');
+    
+    let fabricsSource = {};
+    
+    if (activeMode === 'category' && changersWearCategories.includes(categoryKey)) {
+      // Use changer's wear fabrics
+      fabricsSource = fabricImages[categoryKey] || {};
+    } else {
+      // Use sport fabrics
+      fabricsSource = fabricImages[activeSport] || {};
+    }
+    
+    return Object.entries(fabricsSource).map(([fabricName, images]) => ({
       name: fabricName,
       images,
       properties: fabricProperties[fabricName] || [
@@ -397,7 +774,59 @@ const ProductsPage = () => {
     }));
   };
 
-  const currentSportName = sports.find(s => s.id === activeSport)?.name || 'Basketball';
+  // Track which mode is currently active
+  const [activeMode, setActiveMode] = useState('sport'); // 'sport' or 'category'
+  
+  const getCurrentDisplayName = () => {
+    const changersWearCategories = ['tracksuits', 'lowers', 'varsityjackets', 'hoodies'];
+    const categoryKey = activeCategory.toLowerCase().replace(/\s+/g, '').replace('/', '');
+    
+    if (activeMode === 'category' && changersWearCategories.includes(categoryKey)) {
+      return activeCategory;
+    } else {
+      return sports.find(s => s.id === activeSport)?.name || 'Basketball';
+    }
+  };
+
+  const currentDisplayName = getCurrentDisplayName();
+
+  const getLabelPrefix = () => {
+    const changersWearCategories = ['tracksuits', 'lowers', 'varsityjackets', 'hoodies'];
+    const categoryKey = activeCategory.toLowerCase().replace(/\s+/g, '').replace('/', '');
+    
+    if (activeMode === 'category' && changersWearCategories.includes(categoryKey)) {
+      // Use changer's wear prefixes
+      const prefixMap = {
+        'tracksuits': 'TRA',
+        'lowers': 'LOW',
+        'varsityjackets': 'VAR',
+        'hoodies': 'HOO'
+      };
+      return prefixMap[categoryKey] || 'FAB';
+    } else {
+      // Use sport prefixes
+      const sportPrefixMap = {
+        'basketball': 'BAS',
+        'football': 'FOO',
+        'cricket': 'CRI',
+        'badminton': 'BAD',
+        'volleyball': 'VOL',
+        'tennis': 'TEN',
+        'boxing': 'BOX',
+        'archery': 'ARC',
+        'swimming': 'SWI',
+        'tabletennis': 'TTE',
+        'kabaddi': 'KAB',
+        'hockey': 'HOC',
+        'handball': 'HAN',
+        'netball': 'NET',
+        'kho-kho': 'KHO'
+      };
+      return sportPrefixMap[activeSport] || 'SPO';
+    }
+  };
+
+  const labelPrefix = getLabelPrefix();
 
   return (
     <div className="min-h-screen bg-white pt-16 sm:pt-20 lg:pt-24">
@@ -416,7 +845,7 @@ const ProductsPage = () => {
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleSportChange(sport.id)}
                       className={`w-full text-left px-3 py-2 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 ${
-                        activeSport === sport.id
+                        activeSport === sport.id && activeMode === 'sport'
                           ? 'bg-[#0052FF] text-white'
                           : 'text-[#212121] hover:bg-white hover:shadow-sm'
                       }`}
@@ -437,7 +866,7 @@ const ProductsPage = () => {
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleCategoryChange(category)}
                       className={`w-full text-left px-3 py-2 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 ${
-                        activeCategory === category
+                        activeCategory === category && activeMode === 'category'
                           ? 'bg-[#0052FF] text-white'
                           : 'text-[#212121] hover:bg-white hover:shadow-sm'
                       }`}
@@ -456,16 +885,15 @@ const ProductsPage = () => {
             {/* Header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
               className="mb-6 sm:mb-8"
             >
               <h1 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-[#212121] mb-2">
-                {currentSportName} Fabrics
+                {currentDisplayName} Fabrics
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
-                Choose from our premium collection of performance fabrics designed for {currentSportName.toLowerCase()}
+                Choose from our premium collection of performance fabrics designed for {currentDisplayName.toLowerCase()}
               </p>
             </motion.div>
 
@@ -478,8 +906,8 @@ const ProductsPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
-                  const message = encodeURIComponent("Hello FITKIT, I'd like to place an order!");
-                  window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+                  const message = encodeURIComponent("Hello FITKIT, I'd like to place an order. Please share your catalog and pricing details.");
+                  window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
                 }}
                 className="bg-[#C6FF00] text-[#212121] px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-[#B8E600] transition-colors duration-200 whitespace-nowrap text-sm sm:text-base w-full sm:w-auto"
               >
@@ -489,24 +917,25 @@ const ProductsPage = () => {
 
             {/* Fabric Cards */}
             <div className="space-y-6 sm:space-y-8">
-              {getCurrentFabrics().map((fabric, index) => (
-                <FabricCard
-                  key={fabric.name}
-                  fabricName={fabric.name}
-                  images={fabric.images}
-                  properties={fabric.properties}
-                  index={index}
-                />
-              ))}
+                          {getCurrentFabrics().map((fabric, index) => (
+              <FabricCard
+                key={fabric.name}
+                fabricName={fabric.name}
+                images={fabric.images}
+                properties={fabric.properties}
+                index={index}
+                labelPrefix={labelPrefix}
+                currentDisplayName={currentDisplayName}
+              />
+            ))}
             </div>
 
             {/* No fabrics message */}
             {getCurrentFabrics().length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
                 className="text-center py-12 sm:py-16"
               >
                 <div className="text-4xl sm:text-6xl mb-4">🏃‍♂️</div>
@@ -514,15 +943,15 @@ const ProductsPage = () => {
                   Coming Soon!
                 </h3>
                 <p className="text-sm sm:text-base text-gray-600 mb-6 px-4">
-                  We're working on adding fabric options for {currentSportName}. 
+                  We're working on adding fabric options for {currentDisplayName}. 
                   Contact us for custom fabric solutions.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
-                    const message = encodeURIComponent(`Hello FITKIT, I'd like to inquire about ${currentSportName} fabrics!`);
-                    window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
+                    const message = encodeURIComponent(`Hello FITKIT, I'd like to inquire about ${currentDisplayName} fabrics. Can you provide custom fabric solutions and pricing?`);
+                    window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
                   }}
                   className="bg-[#0052FF] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-[#0041CC] transition-colors duration-200 text-sm sm:text-base"
                 >
@@ -541,24 +970,8 @@ const ProductsPage = () => {
         transition={{ delay: 0.5, duration: 0.3 }}
         className="lg:hidden fixed bottom-6 right-6 z-30"
       >
-        {/* Filter Hint Tooltip */}
-        <AnimatePresence>
-          {showFilterHint && (
-            <motion.div
-              initial={{ opacity: 0, x: 10, scale: 0.8 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 10, scale: 0.8 }}
-              transition={{ delay: 1, duration: 0.3 }}
-              onAnimationComplete={() => {
-                setTimeout(() => setShowFilterHint(false), 3000);
-              }}
-              className="absolute bottom-full right-0 mb-3 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg"
-            >
-              Tap to filter
-              <div className="absolute top-full right-3 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    
+        
 
         <motion.button
           whileHover={{ scale: 1.1 }}

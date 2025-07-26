@@ -126,11 +126,11 @@ const Hero = () => {
                             transition={{ duration: 1.2, delay: 0.3, type: "spring", bounce: 0.4 }}
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
                         >
-                            <span className="text-blue-300 drop-shadow-lg">Your Team.</span>
+                            <span className="text-red-300 drop-shadow-lg">Your Team.</span>
                             <br />
-                            <span className="text-blue-400 drop-shadow-lg">Your Gear.</span>
+                            <span className="text-red-400 drop-shadow-lg">Your Gear.</span>
                             <br />
-                            <span className="text-blue-500 drop-shadow-lg">Your Design.</span>
+                            <span className="text-red-500 drop-shadow-lg">Your Design.</span>
                         </motion.h1>
 
                         {/* Sub-headline */}
