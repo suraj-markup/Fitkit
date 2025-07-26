@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Eye } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import InteractiveProductCard from './InteractiveProductCard';
+import { fabricImages } from '../assets/images';
 
 const SportCard = ({ sport, index, onClick }) => {
   return (
@@ -91,111 +93,112 @@ const CategoryCard = ({ category, index, onClick }) => {
   );
 };
 
-const ProductCard = ({ product, index }) => {
-  const handleViewDetails = () => {
-    const message = encodeURIComponent(`Hello FITKIT, I'm interested in the ${product.title}!`);
-    window.open(`https://wa.me/911234567890?text=${message}`, '_blank');
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-    >
-      <div className="aspect-square bg-gray-200 relative overflow-hidden">
-        <div className="w-full h-full bg-gradient-to-br from-[#0052FF] to-[#C6FF00] opacity-20"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-6xl">🏀</span>
-        </div>
-        {product.isBestSeller && (
-          <div className="absolute top-4 left-4 bg-[#C6FF00] text-[#212121] px-3 py-1 rounded-full text-sm font-bold">
-            Best Seller
-          </div>
-        )}
-      </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-[#212121] mb-2">
-          {product.title}
-        </h3>
-        
-        <div className="flex flex-wrap gap-2 mb-4">
-          {product.tags.map((tag, tagIndex) => (
-            <span
-              key={tagIndex}
-              className="bg-[#F8F9FA] text-[#0052FF] px-3 py-1 rounded-full text-sm font-medium"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleViewDetails}
-          className="btn-secondary w-full flex items-center justify-center space-x-2"
-        >
-          <Eye className="w-4 h-4" />
-          <span>View Details</span>
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-};
-
 const ExploreKits = () => {
   const [activeSection, setActiveSection] = useState('sports'); // 'sports' or 'categories'
   const navigate = useNavigate();
 
-  const sports = [
-    {
-      id: 'basketball',
-      name: 'Basketball',
-      icon: '🏀',
-      description: 'Professional basketball uniforms and gear',
-      fabrics: ['Cotton-Poly Piqué', 'Polyester-Spandex (Lycra)', 'Interlock Polyester Mesh', 'Dry-Fit Dot Mesh']
+  // Product data with real fabric images
+  const basketballProduct = {
+    sport: "Basketball",
+    images: {
+      "BAS1": fabricImages.basketball["Polyester-Spandex (Lycra)"],
+      "BAS2": fabricImages.basketball["Interlock Polyester Mesh"],
+      "BAS3": fabricImages.basketball["Dry-Fit Dot Mesh"],
     },
-    {
-      id: 'football',
-      name: 'Football',
-      icon: '⚽',
-      description: 'Complete football team uniforms',
-      fabrics: ['Polyester Mesh', 'Sublimation Fabric', 'Moisture Wicking', 'Breathable Mesh']
+    tags: ["BAS1", "BAS2", "BAS3"],
+    fabricName: {
+        "BAS1": "Polyester-Spandex (Lycra)",
+        "BAS2": "Interlock Polyester Mesh",
+        "BAS3": "Dry-Fit Dot Mesh",
     },
-    {
-      id: 'cricket',
-      name: 'Cricket',
-      icon: '🏏',
-      description: 'Premium cricket team wear',
-      fabrics: ['Polyester-Cotton Blend', 'Moisture Management', 'UV Protection', 'Quick Dry']
-    },
-    {
-      id: 'tennis',
-      name: 'Tennis',
-      icon: '🎾',
-      description: 'Performance tennis apparel',
-      fabrics: ['Dri-FIT Technology', 'Stretch Fabric', 'Breathable Mesh', 'Lightweight Polyester']
-    },
-    {
-      id: 'badminton',
-      name: 'Badminton',
-      icon: '🏸',
-      description: 'Lightweight badminton gear',
-      fabrics: ['Lightweight Polyester', 'Moisture Wicking', 'Quick Dry', 'Stretch Fabric']
-    },
-    {
-      id: 'volleyball',
-      name: 'Volleyball',
-      icon: '🏐',
-      description: 'Dynamic volleyball uniforms',
-      fabrics: ['Spandex Blend', 'Moisture Management', '4-Way Stretch', 'Breathable']
+    descriptions: {
+      "BAS1": "Premium stretch fabric with excellent moisture-wicking properties and superior comfort for intense basketball games.",
+      "BAS2": "Professional-grade mesh fabric with superior breathability and moisture management for optimal performance.",
+      "BAS3": "Advanced moisture-wicking technology with dot-knit construction for enhanced airflow and comfort.",
     }
-  ];
+  };
+
+  const footballProduct = {
+    sport: "Football",
+    images: {
+      "FOO1": fabricImages.football["Recycled Polyester Dry-Fit"],
+      "FOO2": fabricImages.football["Bird-Eye Mesh"],
+      "FOO3": fabricImages.football["Warp Knit Interlock"],
+    },
+    tags: ["FOO1", "FOO2", "FOO3"],
+    fabricName: {
+        "FOO1": "Recycled Polyester Dry-Fit",
+        "FOO2": "Bird-Eye Mesh",
+        "FOO3": "Warp Knit Interlock"
+    },
+    descriptions: {
+      "FOO1": "Eco-friendly recycled polyester with dry-fit technology for sustainable performance.",
+      "FOO2": "Bird-eye mesh fabric for enhanced ventilation and lightweight comfort.",
+      "FOO3": "Durable warp knit interlock for strength and flexibility in football kits."
+    }
+  };
+
+  const cricketProduct = {
+    sport: "Cricket",
+    images: {
+      "CRI1": fabricImages.cricket["Dry-Fit Polyester"],
+      "CRI2": fabricImages.cricket["Dot-Knit Polyester"],
+      "CRI3": fabricImages.cricket["Cotton-Poly Piqué"]
+    },
+    tags: ["CRI1", "CRI2", "CRI3"],
+    fabricName: {
+        "CRI1": "Dry-Fit Polyester",
+        "CRI2": "Dot-Knit Polyester",
+        "CRI3": "Cotton-Poly Piqué"
+    },
+    descriptions: {
+      "CRI1": "Advanced moisture-wicking technology with superior comfort for intense cricket matches.",
+      "CRI2": "Lightweight and breathable fabric with unique dot-knit texture for superior ventilation.",
+      "CRI3": "Traditional comfort with modern performance, perfect blend of cotton and polyester for breathable wear."
+    }
+  };
+
+  const badmintonProduct = {
+    sport: "Badminton",
+    images: {
+      "BAD1": fabricImages.badminton["Microfiber Polyester"],
+      "BAD2": fabricImages.badminton["Dry-Fit Jersey Knit"],
+      "BAD3": fabricImages.badminton["Warp Knit Fabric"],
+    },
+    tags: ["BAD1", "BAD2", "BAD3"],
+    fabricName: {
+        "BAD1": "Microfiber Polyester",
+        "BAD2": "Dry-Fit Jersey Knit",
+        "BAD3": "Warp Knit Fabric"
+    },
+    descriptions: {
+      "BAD1": "Ultra-lightweight microfiber polyester for maximum agility and comfort in badminton.",
+      "BAD2": "Advanced dry-fit jersey knit with superior moisture management for intense matches.",
+      "BAD3": "Durable warp knit fabric providing excellent stretch and breathability for badminton."
+    }
+  };
+
+  const volleyballProduct = {
+    sport: "Volleyball",
+    images: {
+      "VOL1": fabricImages.volleyball["Polyester-Spandex"],
+      "VOL2": fabricImages.volleyball["Dry-Fit Knit"],
+      "VOL3": fabricImages.volleyball["Jacquard Mesh"],
+    },
+    tags: ["VOL1", "VOL2", "VOL3"],
+    fabricName: {
+        "VOL1": "Polyester-Spandex",
+        "VOL2": "Dry-Fit Knit",
+        "VOL3": "Jacquard Mesh"
+    },
+    descriptions: {
+      "VOL1": "Premium stretch fabric with excellent moisture-wicking properties for dynamic volleyball movements.",
+      "VOL2": "Advanced dry-fit knit technology for superior comfort and performance during intense matches.",
+      "VOL3": "Sophisticated jacquard mesh fabric providing excellent breathability and stylish design."
+    }
+  };
+
+  const products = [basketballProduct, footballProduct, cricketProduct, badmintonProduct, volleyballProduct];
 
   const categories = [
     {
@@ -243,6 +246,11 @@ const ExploreKits = () => {
   const handleCategoryClick = (categoryId) => {
     // Navigate to category products page
     navigate(`/products?category=${categoryId}`);
+  };
+
+  const handleTagClick = (tag, productIndex) => {
+    console.log(`Tag ${tag} clicked for product ${productIndex}`);
+    // You can add additional logic here for tag interactions
   };
 
   return (
@@ -321,16 +329,29 @@ const ExploreKits = () => {
                 View All →
               </motion.button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sports.map((sport, index) => (
-                <SportCard
-                  key={sport.id}
-                  sport={sport}
-                  index={index}
-                  onClick={() => handleSportClick(sport.id)}
-                />
+            
+            {/* Interactive Product Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {products.map((product, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <InteractiveProductCard
+                    images={product.images} // Pass the entire images object
+                    sport={product.sport}
+                    tags={product.tags}
+                    descriptions={product.descriptions}
+                    onTagClick={(tag) => handleTagClick(tag, index)}
+                    fabricName={product.fabricName}
+                  />
+                </motion.div>
               ))}
             </div>
+
           </motion.div>
         )}
 

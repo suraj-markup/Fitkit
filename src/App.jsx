@@ -27,14 +27,18 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-[#F8F9FA]">
-          <Navbar />
-          <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={
+            <>
+              <Navbar />
+              <main>
+                <HomePage />
+              </main>
+              <Footer />
+            </>
+          } />
           <Route path="/products/*" element={<ProductsPage />} />
         </Routes>
-          </main>
-          <Footer />
       </div>
     </Router>
   );
