@@ -116,9 +116,9 @@ import badminton1 from './Badminton/badminton.jpeg';
 import badminton2 from './Badminton/badminton2.jpg';
 import badminton3 from './Badminton/badminton3.webp';
 
-import volleyball1 from './Volleyball/volley2.avif';
-import volleyball2 from './Volleyball/volley3.jpg';
-import volleyball3 from './Volleyball/volleyball.jpeg';
+import volleyball1 from './volleyball/volley2.avif';
+import volleyball2 from './volleyball/volley3.jpg';
+import volleyball3 from './volleyball/volleyball.jpeg';
 
 // Image Collections by Sport and Fabric
 export const fabricImages = {
