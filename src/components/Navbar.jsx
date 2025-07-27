@@ -257,7 +257,7 @@ const Navbar = () => {
                   navigate('/products');
                   setIsMobileMenuOpen(false);
                 }}
-                className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
+                className={`font-medium text-sm sm:text-base transition-colors duration-200 text-left w-full ${
                   shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
@@ -267,7 +267,7 @@ const Navbar = () => {
               </button>
               <a 
                 href="#about" 
-                className={`font-medium text-sm sm:text-base transition-colors duration-200 ${
+                className={`font-medium text-sm sm:text-base transition-colors duration-200 text-left w-full block ${
                   shouldUseDarkText 
                     ? 'text-[#212121] hover:text-[#0052FF]' 
                     : 'text-white hover:text-[#C6FF00]'
