@@ -16,7 +16,7 @@ import Bjersey from './Interlock Polyester Mesh/Bjersey.jpeg';
 // Basketball Fabric Images - Dry-Fit Dot Mesh
 import DryFit1 from './Dry-Fit Dot Mesh/Dry-Fit Dot Mesh.avif';
 import DryFit2  from './Dry-Fit Dot Mesh/dotknit.webp';
-import DryFit3 from './Dry-Fit Dot Mesh/Bjersey.jpg';
+import DryFit3 from './Dry-Fit Dot Mesh/Bjersey.jpeg';
 
 import DryFitPolyester1 from './Dry-Fit Polyester/Bjersey.jpeg';
 import DryFitPolyester2 from './Dry-Fit Polyester/dryfit-polyster.webp';
@@ -29,7 +29,7 @@ import CottonPoly1 from './Cotton-Poly Piqué/Cotton-Poly-Pique.jpg';
 import CottonPoly2 from './Cotton-Poly Piqué/Cotton-Poly Piqué1.jpg';
 import CottonPoly3 from './Cotton-Poly Piqué/Cotton-Poly Piqué jersey.webp';
 import CottonPoly4 from './Cotton-Poly Piqué/Archery jersey.jpeg';
-import cricket3 from './Cotton-Poly Piqué/cricket3.webp';
+import cricket3 from './Cotton-Poly Piqué/cricket3.png';
 // Basketball Fabric Images - Dot-Knit Polyester
 import DotKnit1 from './Dot-Knit Polyester/dotknit.webp';
 import DotKnit2 from './Dot-Knit Polyester/dotknit-polyster.jpg';
@@ -71,7 +71,7 @@ import Honeycomb4 from './Honeycomb Knit/honeycomb.avif';
 
 // Tennis Fabric Images - Mesh Polyester
 import Mesh1 from './Mesh Knit/Mesh knit.jpeg';
-import Mesh2 from './Mesh Knit/TT jesrsey.webp';
+import Mesh2 from './Mesh Knit/TT jesrsey.png';
 import Mesh3 from './Mesh Knit/mesh-warp-knitted-fabric.jpg';
 
 // Badminton Fabric Images - Microfiber Polyester
@@ -100,7 +100,7 @@ import JacquardMesh2 from './Jacquard Mesh/Jacquard Mesh2.jpg';
 import JacquardMesh3 from './Jacquard Mesh/Bjersey.avif';
 
 import badminton1 from './Badminton/badminton.jpeg';
-import badminton2 from './Badminton/badminton2.jpg';
+import badminton2 from './Badminton/badminton2.png';
 import badminton3 from './Badminton/badminton3.webp';
 
 import volleyball1 from './volleyball/volley2.avif';
@@ -146,6 +146,7 @@ import hockey3 from './Hockey/hockey3.webp';
 import handball1 from './Handball/Handball.webp';
 import handball2 from './Handball/Handball2.webp';
 import handball3 from './Handball/handball3.png';
+import handball4 from './Handball/handball3.jpeg';
 
 import netball1 from './Netball/netball.webp';
 import netball2 from './Netball/netball2.jpg';
@@ -431,7 +432,7 @@ export const fabricImages = {
       DryFitPolyester2,
     ],
     "Mesh Dry-Fit": [
-      handball2,
+      handball4,
       DryFit1,
       Mesh1,
       DryFit2,

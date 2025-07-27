@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Palette, Zap, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
 import 'react-slideshow-image/dist/styles.css';
-import { Fade } from 'react-slideshow-image';
 import hero1 from '../assets/optimized/IMG_7453.JPG';
 import hero2 from '../assets/optimized/DSC03471.jpg';
 import hero3 from '../assets/optimized/IMG_7431.JPG';
 import hero4 from '../assets/optimized/IMG_7424.JPG';
-import hero5 from '../assets/optimized/IMG_7420.JPG';
+// import hero5 from '../assets/optimized/IMG_7420.JPG';
+import hero6 from '../assets/optimized/Basketball.png';
+
 
 const slideImages = [
     { url: hero1 },
     { url: hero2 },
+    { url: hero6 },
     { url: hero3 },
     { url: hero4 },
-    { url: hero5 }
+
 ];
 
 const Hero = () => {
@@ -88,19 +90,36 @@ const Hero = () => {
     return (
         <div className="relative min-h-screen overflow-hidden">
             {/* Background Image with Ken Burns Effect - Instant Transition */}
-            <div className="absolute inset-0">
-                <div
-                    className="w-full h-full bg-cover bg-center bg-no-repeat ken-burns-image"
-                    style={{
-                        backgroundImage: imagesLoaded ? `url(${slideImages[currentImageIndex].url})` : 'none',
-                        transition: 'background-image 0.5s ease-in-out',
-                        backgroundColor: imagesLoaded ? 'transparent' : '#f3f4f6'
-                    }}
-                />
+            <div className="absolute inset-0 overflow-hidden">
+                {imagesLoaded && slideImages.map((slide, index) => (
+                    <img
+                        key={index}
+                        src={slide.url}
+                        alt={`FitKit Hero Image ${index + 1}`}
+                        className={`absolute inset-0 w-full h-full object-cover object-center ken-burns-image transition-opacity duration-500 ${
+                            index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        style={{
+                            zIndex: index === currentImageIndex ? 1 : 0
+                        }}
+                    />
+                ))}
+                {!imagesLoaded && (
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                )}
             </div>
 
-            {/* Enhanced Gradient Overlay for Better Readability */}
-            <div className="absolute inset-0 bg-gradient-custom"></div>
+            {/* Comprehensive Background Overlay System */}
+            {/* Base dark overlay */}
+            <div className="absolute inset-0 bg-black/60 z-10"></div>
+            
+          
+            
+            {/* Left-to-right gradient for text emphasis */}
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30 z-10"></div> */}
+            
+            {/* Additional overlay for maximum readability */}
+            {/* <div className="absolute inset-0 bg-black/30 z-10"></div> */}
 
             {/* Manual Navigation Arrows */}
             <motion.button
@@ -148,11 +167,11 @@ const Hero = () => {
                             transition={{ duration: 1.2, delay: 0.3, type: "spring", bounce: 0.4 }}
                             className="text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
                         >
-                            <span className="text-red-300 drop-shadow-lg">Your Team.</span>
+                            <span className="text-red-300 drop-shadow-2xl">Your Team.</span>
                             <br />
-                            <span className="text-red-400 drop-shadow-lg">Your Gear.</span>
+                            <span className="text-red-400 drop-shadow-2xl">Your Gear.</span>
                             <br />
-                            <span className="text-red-500 drop-shadow-lg">Your Design.</span>
+                            <span className="text-red-500 drop-shadow-2xl">Your Design.</span>
                         </motion.h1>
 
                         {/* Sub-headline */}
@@ -160,7 +179,7 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={isVisible ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.8, delay: 0.7 }}
-                            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 text-gray-100 drop-shadow-md font-medium max-w-full sm:max-w-2xl"
+                            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 text-white drop-shadow-xl font-medium max-w-full sm:max-w-2xl"
                         >
                             Specialists in <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">custom jerseys</span>, <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">uniforms</span>, and <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">performance wear</span> for over 15+ sports.
                         </motion.p>
@@ -186,7 +205,7 @@ const Hero = () => {
                                     className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-3 rounded-lg p-2 sm:p-3 hover:bg-opacity-30 transition-all duration-200" 
                                 >
                                     <feature.icon className="h-5 w-5 text-[#C6FF00] drop-shadow-lg flex-shrink-0" />
-                                    <span className="text-base sm:text-lg font-medium text-white drop-shadow-md text-center sm:text-left">{feature.text}</span>
+                                    <span className="text-base sm:text-lg font-medium text-white drop-shadow-xl text-center sm:text-left">{feature.text}</span>
                                 </motion.div>
                             ))}
                         </motion.div>
