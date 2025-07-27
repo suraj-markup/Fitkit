@@ -1,0 +1,26 @@
+{
+  "name": "FitKit - Premium Sports Jersey Manufacturer",
+  "short_name": "FitKit",
+  "description": "India's leading manufacturer of premium sports jerseys, athletic wear, and custom team uniforms",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F9FA",
+  "theme_color": "#1e40af",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+} 
