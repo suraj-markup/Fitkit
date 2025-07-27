@@ -59,17 +59,22 @@ const InteractiveProductCard = ({
   // Preload images to prevent flickering
   useEffect(() => {
     const preloadImages = async () => {
-      const imagePromises = displayImages.map(src => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = resolve; // Continue even if some images fail
-          img.src = src;
+      try {
+        const imagePromises = displayImages.map(src => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = resolve; // Continue even if some images fail
+            img.src = src;
+          });
         });
-      });
-      
-      await Promise.all(imagePromises);
-      setImagesLoaded(true);
+        
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        // If preloading fails, still show the component
+        setImagesLoaded(true);
+      }
     };
     
     preloadImages();
@@ -103,9 +108,9 @@ const InteractiveProductCard = ({
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: imagesLoaded ? 1 : 0, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-50px" }}
       whileHover={{ y: -5 }}
       className="bg-white rounded-xl p-2 border border-blue-300 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
     >
@@ -120,17 +125,21 @@ const InteractiveProductCard = ({
           </div>
         )}
         <AnimatePresence mode="wait">
-          {imagesLoaded && (
+          {imagesLoaded && displayImages[currentImageIndex] && (
             <motion.img
               key={`${activeTag}-${currentImageIndex}`}
-            src={displayImages[currentImageIndex]}
-            alt={`${sport} - ${activeTag} - Image ${currentImageIndex + 1}`}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.1 }}
-            className="w-full h-full object-fit rounded-xl border border-gray-300"
-          />
+              src={displayImages[currentImageIndex]}
+              alt={`${sport} - ${activeTag} - Image ${currentImageIndex + 1}`}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              className="w-full h-full object-cover rounded-xl border border-gray-300"
+              onError={(e) => {
+                // Fallback to a placeholder if image fails to load
+                e.target.style.display = 'none';
+              }}
+            />
           )}
         </AnimatePresence>
 
