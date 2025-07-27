@@ -110,7 +110,7 @@ const FabricCard = ({ fabricName, images, properties, index, labelPrefix, curren
   );
 };
 
-const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeCategory, handleSportChange, handleCategoryChange }) => {
+const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeCategory, activeMode, handleSportChange, handleCategoryChange }) => {
   // Close modal on escape key press
   useEffect(() => {
     const handleEscape = (e) => {
@@ -1016,6 +1016,7 @@ const ProductsPage = () => {
         categories={categories}
         activeSport={activeSport}
         activeCategory={activeCategory}
+        activeMode={activeMode}
         handleSportChange={handleSportChange}
         handleCategoryChange={handleCategoryChange}
       />

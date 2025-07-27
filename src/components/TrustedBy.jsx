@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, Palette, Zap, Users, Trophy, Star } from "lucide-react";
 
@@ -29,6 +29,7 @@ const InfiniteLogoCarousel = ({ clients }) => {
   const animRef = useRef();
   const posRef = useRef(0);
   const speed = 1; // px per frame
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -40,17 +41,33 @@ const InfiniteLogoCarousel = ({ clients }) => {
     setWidth();
     window.addEventListener("resize", setWidth);
 
-    function animate() {
-      posRef.current -= speed;
-      const firstSetWidth = track.scrollWidth / 2;
-      if (Math.abs(posRef.current) >= firstSetWidth) {
-        posRef.current = 0;
-      }
-      track.style.transform = `translateX(${posRef.current}px)`;
-      animRef.current = requestAnimationFrame(animate);
-    }
+    // Wait for images to load before starting animation
+    const imagePromises = clients.map(client => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = resolve; // Continue even if some images fail
+        img.src = client.logo;
+      });
+    });
 
-    animRef.current = requestAnimationFrame(animate);
+    Promise.all(imagePromises).then(() => {
+      setIsLoaded(true);
+      // Start animation after a short delay
+      setTimeout(() => {
+        function animate() {
+          posRef.current -= speed;
+          const firstSetWidth = track.scrollWidth / 2;
+          if (Math.abs(posRef.current) >= firstSetWidth) {
+            posRef.current = 0;
+          }
+          track.style.transform = `translateX(${posRef.current}px)`;
+          animRef.current = requestAnimationFrame(animate);
+        }
+        animRef.current = requestAnimationFrame(animate);
+      }, 500);
+    });
+
     return () => {
       window.removeEventListener("resize", setWidth);
       cancelAnimationFrame(animRef.current);
@@ -68,7 +85,9 @@ const InfiniteLogoCarousel = ({ clients }) => {
         borderRadius: 16,
         padding: "24px 0",
         position: "relative",
-        marginBottom: 32
+        marginBottom: 32,
+        opacity: isLoaded ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out'
       }}
     >
       <div

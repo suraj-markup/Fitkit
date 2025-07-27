@@ -20,6 +20,7 @@ const slideImages = [
 const Hero = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
 
     // Auto-advance slides
     useEffect(() => {
@@ -35,6 +36,25 @@ const Hero = () => {
     // Trigger animations on mount
     useEffect(() => {
         setIsVisible(true);
+    }, []);
+
+    // Preload all hero images to prevent gray screen
+    useEffect(() => {
+        const preloadImages = async () => {
+            const imagePromises = slideImages.map(slide => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                    img.src = slide.url;
+                });
+            });
+            
+            await Promise.all(imagePromises);
+            setImagesLoaded(true);
+        };
+        
+        preloadImages();
     }, []);
 
     const handleWhatsAppClick = () => {
@@ -70,9 +90,11 @@ const Hero = () => {
             {/* Background Image with Ken Burns Effect - Instant Transition */}
             <div className="absolute inset-0">
                 <div
-                    className="w-full h-full bg-cover bg-center bg-no-repeat ken-burns-image transition-all duration-300"
+                    className="w-full h-full bg-cover bg-center bg-no-repeat ken-burns-image"
                     style={{
-                        backgroundImage: `url(${slideImages[currentImageIndex].url})`
+                        backgroundImage: imagesLoaded ? `url(${slideImages[currentImageIndex].url})` : 'none',
+                        transition: 'background-image 0.5s ease-in-out',
+                        backgroundColor: imagesLoaded ? 'transparent' : '#f3f4f6'
                     }}
                 />
             </div>
@@ -140,7 +162,7 @@ const Hero = () => {
                             transition={{ duration: 0.8, delay: 0.7 }}
                             className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 text-gray-100 drop-shadow-md font-medium max-w-full sm:max-w-2xl"
                         >
-                            Specialists in custom jerseys, uniforms, and performance wear for over 15+ sports.
+                            Specialists in <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">custom jerseys</span>, <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">uniforms</span>, and <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl">performance wear</span> for over 15+ sports.
                         </motion.p>
 
                         {/* Features List with Enhanced Stagger */}

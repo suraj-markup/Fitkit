@@ -12,6 +12,7 @@ const InteractiveProductCard = ({
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTag, setActiveTag] = useState(tags[0] || 'BAS1');
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // Handle different image structures
   const getCurrentImages = () => {
@@ -55,6 +56,25 @@ const InteractiveProductCard = ({
     setCurrentImageIndex(0);
   }, [activeTag]);
 
+  // Preload images to prevent flickering
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = displayImages.map(src => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve; // Continue even if some images fail
+          img.src = src;
+        });
+      });
+      
+      await Promise.all(imagePromises);
+      setImagesLoaded(true);
+    };
+    
+    preloadImages();
+  }, [displayImages]);
+
 
 
   const handleDotClick = (index) => {
@@ -83,11 +103,10 @@ const InteractiveProductCard = ({
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: imagesLoaded ? 1 : 0, y: 0 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
-
       className="bg-white rounded-xl p-2 border border-blue-300 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
     >
       {/* Image Slider Section */}
@@ -95,9 +114,15 @@ const InteractiveProductCard = ({
         className="aspect-square rounded-xl relative overflow-hidden bg-gray-100 cursor-pointer"
         onClick={onImageClick}
       >
+        {!imagesLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse bg-gray-200 w-full h-full rounded-xl"></div>
+          </div>
+        )}
         <AnimatePresence mode="wait">
-          <motion.img
-            key={`${activeTag}-${currentImageIndex}`}
+          {imagesLoaded && (
+            <motion.img
+              key={`${activeTag}-${currentImageIndex}`}
             src={displayImages[currentImageIndex]}
             alt={`${sport} - ${activeTag} - Image ${currentImageIndex + 1}`}
             initial={{ opacity: 0, scale: 1.1 }}
@@ -106,6 +131,7 @@ const InteractiveProductCard = ({
             transition={{ duration: 0.1 }}
             className="w-full h-full object-fit rounded-xl border border-gray-300"
           />
+          )}
         </AnimatePresence>
 
         {/* Navigation Dots */}

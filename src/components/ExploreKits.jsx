@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -95,6 +95,7 @@ const CategoryCard = ({ category, index, onClick }) => {
 
 const ExploreKits = () => {
   const [activeSection, setActiveSection] = useState('sports'); // 'sports' or 'categories'
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
   // Product data with real fabric images
@@ -376,9 +377,18 @@ const ExploreKits = () => {
     // You can add additional logic here for tag interactions
   };
 
+  // Set loaded state after a short delay to prevent initial flickering
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section id="products" className="py-20 bg-white">
-      <div className="container-custom">
+      <div className={`container-custom transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -451,14 +461,18 @@ const ExploreKits = () => {
             </div>
             
             {/* Interactive Product Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isLoaded ? 1 : 0 }}
+              transition={{ duration: 0.6 }}
+            >
               {products.map((product, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+                  transition={{ duration: 0.6, delay: isLoaded ? index * 0.1 : 0 }}
                 >
                   <InteractiveProductCard
                     images={product.images} // Pass the entire images object
@@ -471,7 +485,7 @@ const ExploreKits = () => {
                   />
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
           </motion.div>
         )}
@@ -497,14 +511,18 @@ const ExploreKits = () => {
             </div>
             
             {/* Interactive Product Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isLoaded ? 1 : 0 }}
+              transition={{ duration: 0.6 }}
+            >
               {changersWearProducts.map((product, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+                  transition={{ duration: 0.6, delay: isLoaded ? index * 0.1 : 0 }}
                 >
                   <InteractiveProductCard
                     images={product.images} // Pass the entire images object
@@ -517,7 +535,7 @@ const ExploreKits = () => {
                   />
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
           </motion.div>
         )}
@@ -525,9 +543,8 @@ const ExploreKits = () => {
         {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
+          transition={{ duration: 0.6, delay: isLoaded ? 0.4 : 0 }}
           className="text-center mt-16"
         >
           <motion.button
