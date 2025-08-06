@@ -125,7 +125,7 @@ const Navbar = () => {
             className="flex items-center space-x-2 flex-shrink-0"
             onClick={() => navigate('/')}
           >
-            <img src={fitkitLogo} alt="FITKIT" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full" />
+                <img src={fitkitLogo} alt="FITKIT" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full" />
             <div className="flex flex-col">
               <span className={`text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 drop-shadow-sm ${
                 shouldUseDarkText ? 'text-[#212121]' : 'text-white'

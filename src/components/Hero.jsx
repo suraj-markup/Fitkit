@@ -40,9 +40,11 @@ const Hero = () => {
         setIsVisible(true);
     }, []);
 
-    // Preload all hero images to prevent gray screen
+        // Preload all hero images to prevent gray screen
     useEffect(() => {
-        const preloadImages = async () => {
+        // Preload hero images
+        
+        const preloadHeroImages = async () => {
             const imagePromises = slideImages.map(slide => {
                 return new Promise((resolve) => {
                     const img = new Image();
@@ -55,8 +57,8 @@ const Hero = () => {
             await Promise.all(imagePromises);
             setImagesLoaded(true);
         };
-        
-        preloadImages();
+
+        preloadHeroImages();
     }, []);
 
     const handleWhatsAppClick = () => {

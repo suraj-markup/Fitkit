@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, ChevronLeft, ChevronRight, Filter, X } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { fabricImages } from '../assets/images.jsx';
+import ProductSchema from './ProductSchema.jsx';
+import BreadcrumbSchema from './BreadcrumbSchema.jsx';
 
 const FabricCard = ({ fabricName, images, properties, index, labelPrefix, currentDisplayName }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -29,7 +31,7 @@ const FabricCard = ({ fabricName, images, properties, index, labelPrefix, curren
             <img
               src={images[currentImageIndex]}
               alt={`${fabricName} jersey ${currentImageIndex + 1}`}
-              className="w-full h-full object-fit rounded-lg"
+              className="w-full h-full object-cover rounded-lg"
             />
             
             {/* Navigation Arrows */}
@@ -1021,6 +1023,12 @@ const ProductsPage = () => {
         handleCategoryChange={handleCategoryChange}
       />
       */}
+      {/* SEO Components */}
+      <ProductSchema 
+        products={getCurrentFabrics()} 
+        category={currentDisplayName} 
+      />
+      <BreadcrumbSchema />
     </div>
   );
 };

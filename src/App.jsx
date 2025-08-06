@@ -10,6 +10,7 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import ProductsPage from './components/ProductsPage';
 import SEOHead from './components/SEOHead';
+import BreadcrumbSchema from './components/BreadcrumbSchema';
 
 function HomePage() {
   return (
@@ -34,6 +35,7 @@ function HomePage() {
 function App() {
   return (
     <Router>
+      <BreadcrumbSchema />
       <div className="min-h-screen bg-[#F8F9FA]">
         <Routes>
           <Route path="/" element={
