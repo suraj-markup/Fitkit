@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Search } from 'lucide-react';
+import { Menu, X, Search, ChevronDown } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import fitkitLogo from '../assets/fitkit.jpeg';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,34 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+  const [activeFilterSection, setActiveFilterSection] = useState('sports'); // 'sports' or 'wear'
+  
+  // Sports and categories data for mobile filters
+  const sports = [
+    { id: 'basketball', name: 'Basketball' },
+    { id: 'badminton', name: 'Badminton' },
+    { id: 'football', name: 'Football' },
+    { id: 'volleyball', name: 'Volleyball' },
+    { id: 'tennis', name: 'Tennis' },
+    { id: 'cricket', name: 'Cricket' },
+    { id: 'boxing', name: 'Boxing' },
+    { id: 'archery', name: 'Archery' },
+    { id: 'swimming', name: 'Swimming' },
+    { id: 'tabletennis', name: 'Table Tennis' },
+    { id: 'kabaddi', name: 'Kabaddi' },
+    { id: 'hockey', name: 'Hockey' },
+    { id: 'handball', name: 'Handball' },
+    { id: 'netball', name: 'Netball' },
+    { id: 'kho-kho', name: 'Kho-Kho' },
+  ];
+
+  const changersWearCategories = [
+    { id: 'tracksuits', name: 'Tracksuits' },
+    { id: 'lowers', name: 'Lowers / Joggers' },
+    { id: 'varsityjackets', name: 'Varsity Jackets' },
+    { id: 'hoodies', name: 'Hoodies' },
+  ];
   
   // Check if we're on products page
   const isProductsPage = location.pathname.startsWith('/products');
@@ -40,7 +68,49 @@ const Navbar = () => {
     window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
   };
 
+  const handleSportSelect = (sportId) => {
+    navigate(`/products?sport=${sportId}`);
+    setShowFilterSidebar(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    navigate(`/products?category=${categoryId}`);
+    setShowFilterSidebar(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleSportsButtonClick = () => {
+    setActiveFilterSection('sports');
+    setShowFilterSidebar(true);
+  };
+
+  const handleWearButtonClick = () => {
+    setActiveFilterSection('wear');
+    setShowFilterSidebar(true);
+  };
+
+  // Close sidebar when clicking escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setShowFilterSidebar(false);
+      }
+    };
+
+    if (showFilterSidebar) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showFilterSidebar]);
+
   return (
+    <>
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -65,6 +135,37 @@ const Navbar = () => {
               }`}>Engineered for Every Game</span>
             </div>
           </motion.div>
+
+          {/* Mobile Filter Buttons - Only show on products page */}
+          {isProductsPage && (
+            <div className="lg:hidden flex items-center space-x-1 flex-1 justify-center mx-2 max-w-[200px] sm:max-w-none">
+              {/* Sports Button */}
+              <button
+                onClick={handleSportsButtonClick}
+                className={`flex items-center space-x-0.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
+                  shouldUseDarkText 
+                    ? 'text-[#212121] hover:text-[#0052FF] hover:bg-gray-100' 
+                    : 'text-white hover:text-[#C6FF00] hover:bg-white/10'
+                }`}
+              >
+                <span className="text-xs">Sports</span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+
+              {/* Changer's Wear Button */}
+              <button
+                onClick={handleWearButtonClick}
+                className={`flex items-center space-x-0.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
+                  shouldUseDarkText 
+                    ? 'text-[#212121] hover:text-[#0052FF] hover:bg-gray-100' 
+                    : 'text-white hover:text-[#C6FF00] hover:bg-white/10'
+                }`}
+              >
+                <span className="text-xs whitespace-nowrap">Wear</span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+            </div>
+          )}
 
           {/* Centered Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-center space-x-8 flex-1">
@@ -251,6 +352,8 @@ const Navbar = () => {
                 />
               </div>
               
+
+
               {/* Navigation Links */}
               <button 
                 onClick={() => {
@@ -263,7 +366,7 @@ const Navbar = () => {
                     : 'text-white hover:text-[#C6FF00]'
                 }`}
               >
-                Products
+                All Products
               </button>
               <a 
                 href="#about" 
@@ -303,6 +406,117 @@ const Navbar = () => {
         )}
       </div>
     </motion.nav>
+
+    {/* Filter Sidebar Modal - Outside navbar for proper z-index */}
+    <AnimatePresence>
+      {showFilterSidebar && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowFilterSidebar(false)}
+            className="fixed inset-0 bg-black/50 z-[9998] lg:hidden"
+          />
+          
+          {/* Sidebar */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', duration: 0.3 }}
+            className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-white z-[9999] lg:hidden shadow-xl overflow-y-auto"
+          >
+            <div className="p-4 pb-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-[#212121]">Filter Options</h2>
+                <button
+                  onClick={() => setShowFilterSidebar(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+
+              {/* Filter Sections Toggle */}
+              <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+                <button
+                  onClick={() => setActiveFilterSection('sports')}
+                  className={`flex-1 px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+                    activeFilterSection === 'sports'
+                      ? 'bg-[#0052FF] text-white shadow-sm'
+                      : 'text-[#212121] hover:bg-gray-200'
+                  }`}
+                >
+                  By Sports
+                </button>
+                <button
+                  onClick={() => setActiveFilterSection('wear')}
+                  className={`flex-1 px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+                    activeFilterSection === 'wear'
+                      ? 'bg-[#0052FF] text-white shadow-sm'
+                      : 'text-[#212121] hover:bg-gray-200'
+                  }`}
+                >
+                  Changer's Wear
+                </button>
+              </div>
+
+              {/* Sports Section */}
+              {activeFilterSection === 'sports' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-[#212121] mb-4">Choose Sport</h3>
+                  <div className="space-y-2">
+                    {sports.map((sport) => (
+                      <motion.button
+                        key={sport.id}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleSportSelect(sport.id)}
+                        className="w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 text-[#212121] hover:bg-gray-100 border border-gray-200 hover:border-[#0052FF]"
+                      >
+                        {sport.name}
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Changer's Wear Section */}
+              {activeFilterSection === 'wear' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-[#212121] mb-4">Choose Category</h3>
+                  <div className="space-y-2">
+                    {changersWearCategories.map((category) => (
+                      <motion.button
+                        key={category.id}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleCategorySelect(category.id)}
+                        className="w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 text-[#212121] hover:bg-gray-100 border border-gray-200 hover:border-[#0052FF]"
+                      >
+                        {category.name}
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  </>
   );
 };
 

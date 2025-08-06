@@ -98,6 +98,8 @@ import Polyester3 from './Polyester-Spandex (Lycra)/interlock.jpg';
 import JacquardMesh1 from './Jacquard Mesh/Jacquard Mesh.webp';
 import JacquardMesh2 from './Jacquard Mesh/Jacquard Mesh2.jpg';
 import JacquardMesh3 from './Jacquard Mesh/Bjersey.avif';
+import BasketballJacquard from './Jacquard Mesh/basketballJacquard.png';
+import jacquard2 from './Jacquard Mesh/jacqard.avif';
 
 import badminton1 from './Badminton/badminton.jpeg';
 import badminton2 from './Badminton/badminton2.png';
@@ -244,6 +246,17 @@ export const fabricImages = {
       DryFit3,
       DryFit1,
       DryFit2,
+    ],
+    "Jacquard Mesh": [
+      BasketballJacquard,
+      jacquard2,
+      JacquardMesh1,
+      JacquardMesh2,
+    ],
+    "Dot Knit Dry-Fit": [
+      DotKnit3,
+      DotKnit4,
+      DotKnit2,
     ],
   },
   football: {

@@ -104,17 +104,23 @@ const ExploreKits = () => {
       "BAS1": fabricImages.basketball["Polyester-Spandex (Lycra)"],
       "BAS2": fabricImages.basketball["Interlock Polyester Mesh"],
       "BAS3": fabricImages.basketball["Dry-Fit Dot Mesh"],
+      "BAS4": fabricImages.basketball["Jacquard Mesh"],
+      "BAS5": fabricImages.basketball["Dot Knit Dry-Fit"],
     },
-    tags: ["BAS1", "BAS2", "BAS3"],
+    tags: ["BAS1", "BAS2", "BAS3", "BAS4", "BAS5"],
     fabricName: {
         "BAS1": "Polyester-Spandex (Lycra)",
         "BAS2": "Interlock Polyester Mesh",
         "BAS3": "Dry-Fit Dot Mesh",
+        "BAS4": "Jacquard Mesh",
+        "BAS5": "Dot Knit Dry-Fit",
     },
     descriptions: {
       "BAS1": "Premium stretch fabric with excellent moisture-wicking properties and superior comfort for intense basketball games.",
       "BAS2": "Professional-grade mesh fabric with superior breathability and moisture management for optimal performance.",
       "BAS3": "Advanced moisture-wicking technology with dot-knit construction for enhanced airflow and comfort.",
+      "BAS4": "Adds style and ventilation with patterned, durable, breathable construction for basketball performance.",
+      "BAS5": "Ideal for long hours in heat with sweat-wicking and textured airflow zones for enhanced comfort.",
     }
   };
 

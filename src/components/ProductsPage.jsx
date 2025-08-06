@@ -968,16 +968,14 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      {/* Floating Filter Button for Mobile */}
+      {/* Floating Filter Button for Mobile - Hidden since filters moved to navbar */}
+      {/* 
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.3 }}
         className="lg:hidden fixed bottom-6 right-6 z-30"
       >
-    
-        
-
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -1007,8 +1005,10 @@ const ProductsPage = () => {
           <Filter className="w-6 h-6" />
         </motion.button>
       </motion.div>
+      */}
 
-      {/* Filter Modal for Mobile */}
+      {/* Filter Modal for Mobile - No longer needed since filters moved to navbar */}
+      {/* 
       <FilterModal
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
@@ -1020,6 +1020,7 @@ const ProductsPage = () => {
         handleSportChange={handleSportChange}
         handleCategoryChange={handleCategoryChange}
       />
+      */}
     </div>
   );
 };
