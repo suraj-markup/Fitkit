@@ -216,7 +216,7 @@ const FilterModal = ({ isOpen, onClose, sports, categories, activeSport, activeC
   );
 };
 
-const ProductsPage = () => {
+const ProductsPage = ({ searchQuery = '', onSearch }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeSport, setActiveSport] = useState('basketball');
   const [activeCategory, setActiveCategory] = useState('Tracksuits');
@@ -681,7 +681,7 @@ const ProductsPage = () => {
     ]
   };
 
-  // Handle URL parameters on component mount
+  // Handle URL parameters on component mount and updates
   useEffect(() => {
     const sportParam = searchParams.get('sport');
     const categoryParam = searchParams.get('category');
@@ -721,7 +721,7 @@ const ProductsPage = () => {
       // Default state - show sports mode
       setActiveMode('sport');
     }
-  }, [searchParams, sports, categories]);
+  }, [searchParams, sports, categories, setSearchParams]);
 
   const handleSportChange = (sportId) => {
     setActiveSport(sportId);
@@ -768,7 +768,7 @@ const ProductsPage = () => {
       fabricsSource = fabricImages[activeSport] || {};
     }
     
-    return Object.entries(fabricsSource).map(([fabricName, images]) => ({
+    let fabrics = Object.entries(fabricsSource).map(([fabricName, images]) => ({
       name: fabricName,
       images,
       properties: fabricProperties[fabricName] || [
@@ -779,10 +779,76 @@ const ProductsPage = () => {
         "Athletic performance"
       ]
     }));
+
+    // Apply search filter if search query exists
+    if (searchQuery && searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      fabrics = fabrics.filter(fabric => 
+        fabric.name.toLowerCase().includes(query)
+      );
+    }
+    
+    return fabrics;
   };
 
   // Track which mode is currently active
   const [activeMode, setActiveMode] = useState('sport'); // 'sport' or 'category'
+
+  // Function to search across all fabrics, sports, and categories
+  const searchAllItems = (query) => {
+    if (!query || !query.trim()) return [];
+    
+    const searchTerm = query.toLowerCase().trim();
+    const results = [];
+    
+    // Search through sports
+    sports.forEach(sport => {
+      if (sport.name.toLowerCase().includes(searchTerm)) {
+        results.push({
+          type: 'sport',
+          id: sport.id,
+          name: sport.name,
+          displayName: sport.name
+        });
+      }
+    });
+    
+    // Search through changer's wear categories
+    categories.forEach(category => {
+      if (category.toLowerCase().includes(searchTerm)) {
+        results.push({
+          type: 'category',
+          id: category.toLowerCase().replace(/\s+/g, '').replace('/', ''),
+          name: category,
+          displayName: category
+        });
+      }
+    });
+    
+    // Search through all fabric names across all sports and categories
+    Object.entries(fabricImages).forEach(([key, fabricsObj]) => {
+      Object.keys(fabricsObj).forEach(fabricName => {
+        if (fabricName.toLowerCase().includes(searchTerm)) {
+          // Determine if this is a sport or category
+          const isCategory = ['tracksuits', 'lowers', 'varsityjackets', 'hoodies'].includes(key);
+          const displayName = isCategory 
+            ? categories.find(cat => cat.toLowerCase().replace(/\s+/g, '').replace('/', '') === key) || key
+            : sports.find(sport => sport.id === key)?.name || key;
+            
+          results.push({
+            type: 'fabric',
+            parentType: isCategory ? 'category' : 'sport',
+            parentId: key,
+            parentName: displayName,
+            name: fabricName,
+            displayName: `${fabricName} (${displayName})`
+          });
+        }
+      });
+    });
+    
+    return results;
+  };
   
   const getCurrentDisplayName = () => {
     const changersWearCategories = ['tracksuits', 'lowers', 'varsityjackets', 'hoodies'];
@@ -896,12 +962,25 @@ const ProductsPage = () => {
               transition={{ duration: 0.6 }}
               className="mb-6 sm:mb-8"
             >
-              <h1 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-[#212121] mb-2">
-                {currentDisplayName} Fabrics
-              </h1>
-              <p className="text-sm sm:text-base text-gray-600">
-                Choose from our premium collection of performance fabrics designed for {currentDisplayName.toLowerCase()}
-              </p>
+              {searchQuery && searchQuery.trim() ? (
+                <>
+                  <h1 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-[#212121] mb-2">
+                    Search Results for "{searchQuery}"
+                  </h1>
+                  <p className="text-sm sm:text-base text-gray-600">
+                    {searchAllItems(searchQuery).length} results found
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-[#212121] mb-2">
+                    {currentDisplayName} Fabrics
+                  </h1>
+                  <p className="text-sm sm:text-base text-gray-600">
+                    Choose from our premium collection of performance fabrics designed for {currentDisplayName.toLowerCase()}
+                  </p>
+                </>
+              )}
             </motion.div>
 
             {/* MOQ and Order Button */}
@@ -922,36 +1001,124 @@ const ProductsPage = () => {
               </motion.button>
             </div>
 
-            {/* Fabric Cards */}
-            <div className="space-y-6 sm:space-y-8">
-                          {getCurrentFabrics().map((fabric, index) => (
-              <FabricCard
-                key={fabric.name}
-                fabricName={fabric.name}
-                images={fabric.images}
-                properties={fabric.properties}
-                index={index}
-                labelPrefix={labelPrefix}
-                currentDisplayName={currentDisplayName}
-              />
-            ))}
-            </div>
+            {/* Search Results or Fabric Cards */}
+            {searchQuery && searchQuery.trim() ? (
+              <div className="space-y-4">
+                {/* Search Results */}
+                {searchAllItems(searchQuery).map((result, index) => (
+                  <motion.div
+                    key={`${result.type}-${result.id || result.name}-${index}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => {
+                      // Clear search first to exit search mode
+                      if (onSearch) {
+                        onSearch('');
+                      }
+                      
+                      if (result.type === 'sport') {
+                        handleSportChange(result.id);
+                      } else if (result.type === 'category') {
+                        const categoryName = categories.find(cat => 
+                          cat.toLowerCase().replace(/\s+/g, '').replace('/', '') === result.id
+                        );
+                        if (categoryName) {
+                          handleCategoryChange(categoryName);
+                        }
+                      } else if (result.type === 'fabric') {
+                        // Navigate to the parent sport/category first
+                        if (result.parentType === 'sport') {
+                          handleSportChange(result.parentId);
+                        } else {
+                          const categoryName = categories.find(cat => 
+                            cat.toLowerCase().replace(/\s+/g, '').replace('/', '') === result.parentId
+                          );
+                          if (categoryName) {
+                            handleCategoryChange(categoryName);
+                          }
+                        }
+                      }
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-[#212121] text-lg">
+                          {result.displayName}
+                        </h3>
+                        <p className="text-gray-600 text-sm capitalize">
+                          {result.type === 'fabric' ? `Fabric in ${result.parentName}` : result.type}
+                        </p>
+                      </div>
+                      <div className="text-[#0052FF]">
+                        <ChevronRight className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+                
+                {/* No search results */}
+                {searchAllItems(searchQuery).length === 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center py-12 sm:py-16"
+                  >
+                    <div className="text-4xl sm:text-6xl mb-4">🔍</div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#212121] mb-2">
+                      No Results Found
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-6 px-4">
+                      We couldn't find any fabrics, sports, or categories matching "{searchQuery}". 
+                      Try searching for different terms.
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        const message = encodeURIComponent(`Hello FITKIT, I'm looking for "${searchQuery}" but couldn't find it on your website. Can you help me find what I need?`);
+                        window.open(`https://wa.me/917014680160?text=${message}`, '_blank');
+                      }}
+                      className="bg-[#0052FF] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-[#0041CC] transition-colors duration-200 text-sm sm:text-base"
+                    >
+                      Contact Us for Help
+                    </motion.button>
+                  </motion.div>
+                )}
+              </div>
+            ) : (
+              /* Regular Fabric Cards */
+              <div className="space-y-6 sm:space-y-8">
+                {getCurrentFabrics().map((fabric, index) => (
+                  <FabricCard
+                    key={fabric.name}
+                    fabricName={fabric.name}
+                    images={fabric.images}
+                    properties={fabric.properties}
+                    index={index}
+                    labelPrefix={labelPrefix}
+                    currentDisplayName={currentDisplayName}
+                  />
+                ))}
+              </div>
+            )}
 
-            {/* No fabrics message */}
-            {getCurrentFabrics().length === 0 && (
+            {/* No fabrics message - only show when not in search mode */}
+            {!searchQuery && getCurrentFabrics().length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 className="text-center py-12 sm:py-16"
               >
-                <div className="text-4xl sm:text-6xl mb-4">🏃‍♂️</div>
+                <div className="text-4xl sm:text-6xl mb-4">💬</div>
                 <h3 className="text-xl sm:text-2xl font-bold text-[#212121] mb-2">
-                  Coming Soon!
+                  Didn't find what you want?
                 </h3>
                 <p className="text-sm sm:text-base text-gray-600 mb-6 px-4">
-                  We're working on adding fabric options for {currentDisplayName}. 
-                  Contact us for custom fabric solutions.
+                  We're here to help! Contact us for custom {currentDisplayName.toLowerCase()} solutions and fabric options.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}

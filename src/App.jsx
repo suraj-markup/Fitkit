@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -32,15 +33,34 @@ function HomePage() {
   );
 }
 
-function App() {
+function AppContent() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    // If user is searching from home page and there's a query, redirect to products page
+    if (query && query.trim() && location.pathname === '/') {
+      navigate('/products');
+    }
+  };
+
+  // Clear search when navigating away from products page
+  useEffect(() => {
+    if (location.pathname !== '/products' && !location.pathname.startsWith('/products')) {
+      setSearchQuery('');
+    }
+  }, [location.pathname]);
+
   return (
-    <Router>
+    <>
       <BreadcrumbSchema />
       <div className="min-h-screen bg-[#F8F9FA]">
         <Routes>
           <Route path="/" element={
             <>
-              <Navbar />
+              <Navbar onSearch={handleSearch} currentSearchQuery={searchQuery} />
               <main>
                 <HomePage />
               </main>
@@ -56,15 +76,23 @@ function App() {
                 url="https://www.fitkitsportswear.com/products"
                 image="https://www.fitkitsportswear.com/products-og-image.png"
               />
-              <Navbar />
+              <Navbar onSearch={handleSearch} currentSearchQuery={searchQuery} />
               <main>
-                <ProductsPage />
+                <ProductsPage searchQuery={searchQuery} onSearch={handleSearch} />
               </main>
               <Footer />
             </>
           } />
         </Routes>
       </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

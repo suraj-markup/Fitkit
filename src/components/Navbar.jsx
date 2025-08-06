@@ -4,15 +4,20 @@ import { Menu, X, Search, ChevronDown } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import fitkitLogo from '../assets/fitkit.jpeg';
 import { useNavigate } from 'react-router-dom';
-const Navbar = () => {
+const Navbar = ({ onSearch, currentSearchQuery = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(currentSearchQuery);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showFilterSidebar, setShowFilterSidebar] = useState(false);
   const [activeFilterSection, setActiveFilterSection] = useState('sports'); // 'sports' or 'wear'
+
+  // Sync local search query with parent component
+  useEffect(() => {
+    setSearchQuery(currentSearchQuery);
+  }, [currentSearchQuery]);
   
   // Sports and categories data for mobile filters
   const sports = [
@@ -245,13 +250,19 @@ const Navbar = () => {
                   </motion.button>
                 ) : (
                   /* Expanded Search Bar */
-                  <motion.div
+                  <motion.form
                     key="search-bar"
                     initial={{ width: 0, opacity: 0, scale: 0.8 }}
                     animate={{ width: 'auto', opacity: 1, scale: 1 }}
                     exit={{ width: 0, opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
                     className="relative flex items-center"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (onSearch && searchQuery.trim()) {
+                        onSearch(searchQuery.trim());
+                      }
+                    }}
                   >
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Search className={`h-4 w-4 ${
@@ -269,26 +280,42 @@ const Navbar = () => {
                         }
                       }}
                       autoFocus
-                      className={`pl-10 pr-10 py-2 w-64 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
+                      className={`pl-10 pr-20 py-2 w-64 rounded-lg border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
                         shouldUseDarkText 
                           ? 'bg-white border-gray-300 text-[#212121] placeholder-gray-500' 
                           : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
                       }`}
                     />
                     <button
+                      type="submit"
+                      className={`absolute right-8 p-1 rounded-full transition-colors duration-200 ${
+                        shouldUseDarkText 
+                          ? 'hover:bg-gray-200 text-gray-400 hover:text-gray-600' 
+                          : 'hover:bg-white/20 text-gray-300 hover:text-white'
+                      }`}
+                      title="Search"
+                    >
+                      <Search className="h-3 w-3" />
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => {
                         setIsSearchExpanded(false);
                         setSearchQuery('');
+                        if (onSearch) {
+                          onSearch('');
+                        }
                       }}
                       className={`absolute right-3 p-1 rounded-full transition-colors duration-200 ${
                         shouldUseDarkText 
                           ? 'hover:bg-gray-200 text-gray-400 hover:text-gray-600' 
                           : 'hover:bg-white/20 text-gray-300 hover:text-white'
                       }`}
+                      title="Clear search"
                     >
                       <X className="h-3 w-3" />
                     </button>
-                  </motion.div>
+                  </motion.form>
                 )}
               </AnimatePresence>
             </div>
@@ -333,7 +360,16 @@ const Navbar = () => {
           >
             <div className="flex flex-col space-y-3 sm:space-y-4">
               {/* Mobile Search Bar */}
-              <div className="relative">
+              <form 
+                className="relative"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (onSearch && searchQuery.trim()) {
+                    onSearch(searchQuery.trim());
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
+              >
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Search className={`h-4 w-4 ${
                     shouldUseDarkText ? 'text-gray-400' : 'text-gray-300'
@@ -344,13 +380,24 @@ const Navbar = () => {
                   placeholder="Search kits..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`pl-10 pr-4 py-2 sm:py-2 w-full rounded-lg border text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
+                  className={`pl-10 pr-12 py-2 sm:py-2 w-full rounded-lg border text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0052FF] ${
                     shouldUseDarkText 
                       ? 'bg-gray-50 border-gray-300 text-[#212121] placeholder-gray-500' 
                       : 'bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-gray-200'
                   }`}
                 />
-              </div>
+                <button
+                  type="submit"
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors duration-200 ${
+                    shouldUseDarkText 
+                      ? 'hover:bg-gray-200 text-gray-400 hover:text-gray-600' 
+                      : 'hover:bg-white/20 text-gray-300 hover:text-white'
+                  }`}
+                  title="Search"
+                >
+                  <Search className="h-4 w-4" />
+                </button>
+              </form>
               
 
 
