@@ -195,11 +195,22 @@ const Footer = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           viewport={{ once: true }}
-          className="border-t border-gray-700 mt-12 pt-8 text-center"
+          className="border-t border-gray-700 mt-12 pt-8 text-center space-y-2"
         >
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-300 text-sm">
             © {new Date().getFullYear()} FITKIT. All rights reserved. | Crafting Champions, One Kit at a Time.
           </p>
+                      <p className="text-gray-400 text-xs">
+              Designed and Developed by{' '}
+              <a 
+                href="https://surajmarkup.netlify.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#C6FF00] hover:text-[#B8E600] transition-colors duration-200 underline"
+              >
+                Suraj Kumar
+              </a>
+            </p>
         </motion.div>
       </div>
     </footer>
